@@ -63,7 +63,8 @@ body {
   color: var(--ink); background: var(--paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* clip вместо hidden — не ломает position:fixed на iOS Safari */
+  overflow-x: clip;
 }
 
 /* Ambient glow — много розового */
@@ -308,7 +309,10 @@ section {
 
 .site-header {
   position: relative; z-index: 1;
-  min-height: clamp(190px, 50vw, 280px);
+  max-width: var(--max-w);
+  margin-inline: auto;
+  /* Пропорция фото shapka.webp (1200×584) — показываем фото целиком, без обрезки */
+  aspect-ratio: 1200 / 584;
   display: flex; flex-direction: column;
   background: var(--paper);
   overflow: hidden;
@@ -377,27 +381,29 @@ section {
 }
 .brand-tagline {
   font-family: var(--font-body);
-  font-size: 0.60rem; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--rose-bright);
-  text-shadow: 0 0 10px rgba(255,133,194,0.5);
-  margin-top: 1px;
+  font-size: 0.74rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: linear-gradient(135deg, var(--rose-bright) 0%, var(--gold) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 3px;
+  animation: taglineGlow 3s ease-in-out infinite;
 }
+@keyframes taglineGlow {
+  0%,100% { filter: drop-shadow(0 0 5px rgba(255,133,194,0.5)); }
+  50%     { filter: drop-shadow(0 0 13px rgba(255,133,194,0.95)) drop-shadow(0 0 22px rgba(240,216,152,0.4)); }
+}
+/* На иврите — крупнее и без широких пробелов для читаемости */
+[lang="he"] .brand-tagline { font-size: 0.86rem; letter-spacing: 0.02em; }
 
-/* Header actions */
-.header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.header-book-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 20px; border-radius: 999px;
-  background: linear-gradient(135deg, var(--rose-bright), var(--rose-deep));
-  color: #fff; font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
-  border: none; cursor: default; letter-spacing: 0.04em;
-  box-shadow: 0 4px 16px var(--rose-glow);
-  opacity: 0.7;
+/* Header actions — языки сверху, инста снизу */
+.header-actions {
+  display: flex; flex-direction: column; align-items: flex-end;
+  gap: 8px; flex-shrink: 0;
 }
 .header-insta {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 38px; height: 38px; border-radius: 50%;
   background: linear-gradient(45deg, #f09433 0%, #e6683c 20%, #dc2743 40%, #cc2366 70%, #bc1888 100%);
   border: none;
   color: #fff;
@@ -413,43 +419,53 @@ section {
   filter: drop-shadow(0 0 4px rgba(255,255,255,0.60));
 }
 
-/* Hamburger */
-.hamburger {
+/* Плавающая кнопка меню — fixed, всегда видна при прокрутке */
+.floating-menu {
+  position: fixed; top: 14px; inset-inline-end: 14px; z-index: 95;
   display: flex;
   flex-direction: column; gap: 5px; align-items: center; justify-content: center;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(255,133,194,0.06); border: 1px solid var(--line);
-  cursor: pointer; padding: 0; flex-shrink: 0;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(12,8,18,0.78);
+  border: 1px solid rgba(255,133,194,0.40);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 24px rgba(255,133,194,0.30);
+  cursor: pointer; padding: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.floating-menu:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 36px rgba(255,133,194,0.5);
 }
 .hb-line {
-  display: block; width: 18px; height: 1.5px;
-  background: var(--ink-soft); border-radius: 2px;
+  display: block; width: 20px; height: 2px;
+  background: var(--rose-bright); border-radius: 2px;
+  box-shadow: 0 0 6px rgba(255,133,194,0.6);
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
-.hamburger.hb-open .hb-line:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-.hamburger.hb-open .hb-line:nth-child(2) { opacity: 0; }
-.hamburger.hb-open .hb-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.floating-menu.hb-open { z-index: 110; }
+.floating-menu.hb-open .hb-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.floating-menu.hb-open .hb-line:nth-child(2) { opacity: 0; }
+.floating-menu.hb-open .hb-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Language switcher */
+/* Языки в строке шапки — заметные пилюли */
+.header-langs-inline {
+  display: flex; align-items: center; gap: 4px;
+}
 .lang-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 28px; border-radius: 6px;
-  background: transparent; color: var(--ink-mute);
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+  min-width: 38px; height: 30px; padding: 0 8px; border-radius: 8px;
+  background: rgba(12,8,18,0.55); color: var(--ink-soft);
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em;
   text-transform: uppercase; text-decoration: none;
-  border: 1px solid transparent;
+  border: 1px solid rgba(255,133,194,0.25);
   transition: all 0.2s ease;
 }
-.lang-btn:hover { background: rgba(255,133,194,0.10); color: var(--rose-bright); }
+.lang-btn:hover { background: rgba(255,133,194,0.18); color: var(--rose-bright); }
 .lang-btn.lang-active {
-  background: rgba(255,133,194,0.18);
-  color: var(--rose-bright); border-color: rgba(255,133,194,0.45);
-  box-shadow: 0 0 12px rgba(255,133,194,0.25);
-}
-
-/* Языки в строке шапки */
-.header-langs-inline {
-  display: flex; align-items: center; gap: 2px;
+  background: linear-gradient(135deg, var(--rose-bright), var(--rose-deep));
+  color: #fff; border-color: var(--rose-bright);
+  box-shadow: 0 0 16px rgba(255,133,194,0.55);
 }
 
 /* Dropdown nav меню */
@@ -481,6 +497,14 @@ section {
 .nav-link:hover {
   background: rgba(255,133,194,0.08); color: var(--rose-bright);
 }
+/* «На главную» — кнопка-сброс, отделена линией */
+.nav-home {
+  background: transparent; border: none; width: 100%;
+  cursor: pointer; text-align: start;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 8px; padding-bottom: 18px;
+}
+.nav-home .nav-heart { font-size: 1.3rem; font-weight: 700; }
 
 /* Overlay */
 .nav-overlay {
@@ -741,6 +765,13 @@ section + section::before {
 [dir="rtl"] .m-arrow svg {
   transform: scaleX(-1) !important;
 }
+
+/* RTL Splide fix — Splide считает позиции в LTR-координатах.
+   Форсим LTR на структуре карусели, а контент слайда возвращаем в RTL. */
+[dir="rtl"] .splide,
+[dir="rtl"] .splide__track,
+[dir="rtl"] .splide__list { direction: ltr; }
+[dir="rtl"] .splide__slide { direction: rtl; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

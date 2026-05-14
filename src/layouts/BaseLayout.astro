@@ -48,16 +48,14 @@ const soonLabel = pick({
           </span>
         </a>
 
-        <!-- Действия -->
+        <!-- Действия: языки над иконкой инсты -->
         <div class="header-actions">
-          <!-- Языки вместо кнопки записи -->
           <div class="header-langs-inline">
             {LOCALES.map(l => (
               <a href={`/${l}/`} class={`lang-btn${l === lang ? ' lang-active' : ''}`}>{l.toUpperCase()}</a>
             ))}
           </div>
 
-          <!-- Instagram -->
           <a class="header-insta" href={instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -65,16 +63,16 @@ const soonLabel = pick({
               <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
             </svg>
           </a>
-
-          <!-- Бургер -->
-          <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-            <span class="hb-line"></span>
-            <span class="hb-line"></span>
-            <span class="hb-line"></span>
-          </button>
         </div>
       </div>
     </header>
+
+    <!-- Плавающая кнопка меню — всегда видна при прокрутке -->
+    <button class="floating-menu" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+      <span class="hb-line"></span>
+    </button>
 
     <!-- Глобальный граффити фон — BARBIE PINK -->
     <div class="graffiti-bg" aria-hidden="true">
@@ -100,6 +98,9 @@ const soonLabel = pick({
     <!-- Dropdown навигация -->
     <nav class="nav-dropdown" id="nav-dropdown" aria-label="Navigation">
       <button class="nav-close-btn" id="nav-close" aria-label="Close menu">✕</button>
+      <button class="nav-link nav-home" id="nav-home" type="button">
+        <span class="nav-heart">⌂</span>{pick({ ru: 'На главную', he: 'לראש הדף', en: 'To top' }, lang)}
+      </button>
       {navLinks.map(item => (
         <a class="nav-link" href={item.href}>
           <span class="nav-heart">♥</span>{item.label}
@@ -172,6 +173,13 @@ const soonLabel = pick({
         overlay  && overlay.addEventListener('click', closeNav);
         dropdown && dropdown.querySelectorAll('a').forEach(function(a) {
           a.addEventListener('click', closeNav);
+        });
+
+        // Кнопка "На главную" — скролл наверх
+        var navHome = document.getElementById('nav-home');
+        navHome && navHome.addEventListener('click', function() {
+          closeNav();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         // Header scroll

@@ -109,18 +109,6 @@ const categories = content.hairServices;
       </div>
     </div>
 
-    <!-- Фото галерея -->
-    <div class="hair-photos">
-      <p class="hair-photos-label">
-        {pick({ ru: '— фотографии работ —', he: '— תמונות עבודה —', en: '— portfolio —' }, lang)}
-      </p>
-      <div class="hair-photos-grid">
-        <a class="hair-photo-item" href="#gallery"><img src="/images/5.webp" alt="" loading="lazy" /></a>
-        <a class="hair-photo-item" href="#gallery"><img src="/images/6.webp" alt="" loading="lazy" /></a>
-        <a class="hair-photo-item" href="#gallery"><img src="/images/7.webp" alt="" loading="lazy" /></a>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -300,23 +288,6 @@ const categories = content.hairServices;
     text-shadow: 0 0 10px rgba(255,133,194,0.60);
   }
 
-  /* Фото */
-  .hair-photos { margin-top: clamp(36px,6vw,56px); }
-  .hair-photos-label {
-    text-align: center; color: var(--ink-mute); font-size: 0.80rem;
-    letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 20px;
-  }
-  .hair-photos-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-  }
-  .hair-photo-item {
-    display: block; border-radius: var(--r-md); overflow: hidden;
-    aspect-ratio: 3/4; border: 1px solid rgba(255,133,194,0.15);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .hair-photo-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 40px rgba(255,133,194,0.15); }
-  .hair-photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
   /* RTL fix — зеркалим стрелки чтобы они смотрели наружу */
   [dir="rtl"] .hair-arrow svg { transform: scaleX(-1); }
 
@@ -330,7 +301,5 @@ const categories = content.hairServices;
     .hair-carousel-wrap { gap: 6px; }
     .hair-arrow { width: 36px; height: 36px; }
     .hair-arrow svg { width: 16px; height: 16px; }
-    .hair-photos-grid { grid-template-columns: 1fr 1fr; }
-    .hair-photos-grid .photo-placeholder:last-child { display: none; }
   }
 </style>
