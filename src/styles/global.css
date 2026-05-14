@@ -54,7 +54,14 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 *::selection { background: var(--rose); color: var(--paper); }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* Горизонтальный клип на <html>, а НЕ на <body>.
+     overflow-x на body делает overflow-y вычисляемым как auto → body
+     становится скролл-контейнером и ломает position:fixed на iOS/RTL. */
+  overflow-x: hidden;
+}
 
 body {
   margin: 0;
@@ -63,8 +70,6 @@ body {
   color: var(--ink); background: var(--paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* clip вместо hidden — не ломает position:fixed на iOS Safari */
-  overflow-x: clip;
 }
 
 /* Ambient glow — много розового */
@@ -337,10 +342,10 @@ section {
   position: absolute; inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(8,8,16,0.62) 0%,
-    rgba(8,8,16,0.18) 30%,
-    rgba(8,8,16,0.12) 52%,
-    rgba(8,8,16,0.70) 80%,
+    rgba(8,8,16,0.82) 0%,
+    rgba(8,8,16,0.34) 32%,
+    rgba(8,8,16,0.16) 54%,
+    rgba(8,8,16,0.72) 80%,
     var(--paper) 100%
   );
 }
@@ -353,6 +358,10 @@ section {
   width: 100%; max-width: var(--max-w);
   margin-inline: auto;
   padding: 14px clamp(16px, 4vw, 44px);
+}
+/* На мобиле освобождаем правый верхний угол под плавающую кнопку меню */
+@media (max-width: 640px) {
+  .header-top { padding-inline-end: 70px; }
 }
 
 /* Контент налезает на нижнюю часть шапки */
@@ -371,30 +380,30 @@ section {
 .brand-logo { width: 100%; height: 100%; object-fit: cover; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
 .brand-name {
-  font-family: var(--font-script); font-size: 1.85rem; font-weight: 400;
-  background: linear-gradient(135deg, var(--rose-bright) 0%, #FFD6F0 40%, var(--gold) 100%);
+  font-family: var(--font-script); font-size: 1.95rem; font-weight: 400;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFD6F0 45%, var(--gold) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.25; letter-spacing: 0.01em;
   padding-block: 2px;
   overflow: visible;
+  filter: drop-shadow(0 2px 7px rgba(0,0,0,0.9));
 }
 .brand-tagline {
   font-family: var(--font-body);
-  font-size: 0.74rem; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  background: linear-gradient(135deg, var(--rose-bright) 0%, var(--gold) 100%);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 0.76rem; font-weight: 800;
+  letter-spacing: 0.10em; text-transform: uppercase;
+  color: #FFD2EA;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.95), 0 0 14px rgba(255,133,194,0.75);
   margin-top: 3px;
   animation: taglineGlow 3s ease-in-out infinite;
 }
 @keyframes taglineGlow {
-  0%,100% { filter: drop-shadow(0 0 5px rgba(255,133,194,0.5)); }
-  50%     { filter: drop-shadow(0 0 13px rgba(255,133,194,0.95)) drop-shadow(0 0 22px rgba(240,216,152,0.4)); }
+  0%,100% { text-shadow: 0 1px 5px rgba(0,0,0,0.95), 0 0 10px rgba(255,133,194,0.55); }
+  50%     { text-shadow: 0 1px 5px rgba(0,0,0,0.95), 0 0 18px rgba(255,133,194,1), 0 0 30px rgba(240,216,152,0.5); }
 }
 /* На иврите — крупнее и без широких пробелов для читаемости */
-[lang="he"] .brand-tagline { font-size: 0.86rem; letter-spacing: 0.02em; }
+[lang="he"] .brand-tagline { font-size: 0.92rem; letter-spacing: 0.01em; font-weight: 700; }
 
 /* Header actions — языки сверху, инста снизу */
 .header-actions {
@@ -424,12 +433,11 @@ section {
   position: fixed; top: 14px; inset-inline-end: 14px; z-index: 95;
   display: flex;
   flex-direction: column; gap: 5px; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: 50%;
-  background: rgba(12,8,18,0.78);
-  border: 1px solid rgba(255,133,194,0.40);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.45), 0 0 24px rgba(255,133,194,0.30);
+  width: 48px; height: 48px; border-radius: 50%;
+  /* Сплошной фон без backdrop-filter — иначе fixed-кнопка дёргается на iOS при скролле */
+  background: #14091C;
+  border: 1px solid rgba(255,133,194,0.55);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55), 0 0 26px rgba(255,133,194,0.40);
   cursor: pointer; padding: 0;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -472,10 +480,9 @@ section {
 .nav-dropdown {
   position: fixed; top: 0; inset-inline-end: 0; bottom: 0;
   width: min(300px, 80vw);
-  background: rgba(10,8,18,0.97);
-  backdrop-filter: blur(28px);
+  background: #0A0512;
   border-inline-start: 1px solid var(--line-strong);
-  box-shadow: -20px 0 60px rgba(0,0,0,0.6);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.7);
   z-index: 85;
   padding: 80px 28px 40px;
   display: flex; flex-direction: column; gap: 4px;
@@ -545,15 +552,15 @@ section {
 @media (max-width: 640px) {
   .sticky-bar {
     inset-inline: 0; bottom: 0;
-    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-    background: rgba(8,8,16,0.93);
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    /* Сплошной фон без backdrop-filter — иначе iOS Safari дёргает fixed-панель при скролле */
+    background: #0B0712;
     border-top: 1px solid var(--line-strong);
-    backdrop-filter: saturate(140%) blur(16px);
-    box-shadow: 0 -6px 24px rgba(0,0,0,0.5), 0 -1px 0 rgba(255,133,194,0.08);
+    box-shadow: 0 -6px 24px rgba(0,0,0,0.6);
     pointer-events: auto;
   }
   .sticky-bar .btn { flex: 1; padding: 13px 12px; }
-  body { padding-bottom: 78px; }
+  body { padding-bottom: 82px; }
 }
 @media (min-width: 641px) {
   .sticky-bar { bottom: 24px; inset-inline-end: 24px; gap: 10px; }
