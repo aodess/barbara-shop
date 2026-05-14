@@ -307,11 +307,10 @@ section {
 
 .site-header {
   position: sticky; top: 0; z-index: 90;
-  border-bottom: 1px solid rgba(255,133,194,0.08);
   background: rgba(8,8,16,0.82);
   backdrop-filter: saturate(140%) blur(20px);
   -webkit-backdrop-filter: saturate(140%) blur(20px);
-  transition: box-shadow 0.3s, border-color 0.3s;
+  transition: box-shadow 0.3s, border-color 0.3s, padding-block-end 0.45s cubic-bezier(0.16,1,0.3,1);
   overflow: hidden;
 }
 
@@ -434,8 +433,14 @@ section {
 }
 .lang-btn:hover { background: rgba(255,133,194,0.10); color: var(--rose-bright); }
 .lang-btn.lang-active {
-  background: rgba(255,133,194,0.14);
-  color: var(--rose-bright); border-color: rgba(255,133,194,0.30);
+  background: rgba(255,133,194,0.18);
+  color: var(--rose-bright); border-color: rgba(255,133,194,0.45);
+  box-shadow: 0 0 12px rgba(255,133,194,0.25);
+}
+
+/* Языки в строке шапки */
+.header-langs-inline {
+  display: flex; align-items: center; gap: 2px;
 }
 
 /* Dropdown nav меню */
@@ -725,6 +730,33 @@ section + section::before {
 [dir="rtl"] .hair-arrow svg,
 [dir="rtl"] .m-arrow svg {
   transform: scaleX(-1) !important;
+}
+
+/* ===================== MOBILE HEADER EXPANSION ===================== */
+
+/* На мобиле шапка растягивается до уровня кружка-логотипа в Hero */
+@media (max-width: 820px) {
+  .site-header:not(.scrolled) {
+    padding-block-end: 160px;
+    border-bottom: none;
+  }
+  .site-header.scrolled {
+    padding-block-end: 4px;
+    border-bottom: 1px solid rgba(255,133,194,0.16);
+  }
+  /* Фото шапки чуть ярче и уходит в тёмный внизу */
+  .header-shapka-bg img {
+    opacity: 0.32;
+    object-position: center 25%;
+  }
+  .header-shapka-bg::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(8,8,16,0.10) 0%,
+      rgba(8,8,16,0.35) 55%,
+      rgba(8,8,16,0.90) 100%
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

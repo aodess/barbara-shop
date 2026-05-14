@@ -45,11 +45,12 @@ const soonLabel = pick({
 
         <!-- Действия -->
         <div class="header-actions">
-          <!-- Кнопка записи (пока неактивна) -->
-          <button class="header-book-btn" type="button" id="header-book-btn" aria-label={bookLabel}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            {bookLabel}
-          </button>
+          <!-- Языки вместо кнопки записи -->
+          <div class="header-langs-inline">
+            {LOCALES.map(l => (
+              <a href={`/${l}/`} class={`lang-btn${l === lang ? ' lang-active' : ''}`}>{l.toUpperCase()}</a>
+            ))}
+          </div>
 
           <!-- Instagram -->
           <a class="header-insta" href={instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
@@ -67,13 +68,6 @@ const soonLabel = pick({
             <span class="hb-line"></span>
           </button>
         </div>
-      </div>
-
-      <!-- Выбор языка -->
-      <div class="header-langs">
-        {LOCALES.map(l => (
-          <a href={`/${l}/`} class={`lang-btn${l === lang ? ' lang-active' : ''}`}>{l.toUpperCase()}</a>
-        ))}
       </div>
     </header>
 
