@@ -46,9 +46,6 @@ const skin  = content.skinServices;
           <span class="photo-placeholder-icon">📸</span>
           <span>{pick({ ru: 'Фото маникюра', he: 'תמונות מניקור', en: 'Manicure photos' }, lang)}</span>
         </div>
-        <div class="photo-placeholder">
-          <span class="photo-placeholder-icon">📸</span>
-        </div>
       </div>
 
     </div>
@@ -95,9 +92,6 @@ const skin  = content.skinServices;
           <span class="photo-placeholder-icon">📸</span>
           <span>{pick({ ru: 'Фото работ', he: 'תמונות עבודה', en: 'Work photos' }, lang)}</span>
         </div>
-        <div class="photo-placeholder">
-          <span class="photo-placeholder-icon">📸</span>
-        </div>
       </div>
 
     </div>
@@ -138,14 +132,11 @@ const skin  = content.skinServices;
   }
   .ns-item-note { color: var(--ink-mute); font-size: 0.80rem; margin: 0; font-style: italic; }
 
-  .ns-photos { display: flex; flex-direction: column; gap: 12px; }
-  .ns-photos .photo-placeholder { aspect-ratio: 3/4; }
-  .ns-photos .photo-placeholder:last-child { aspect-ratio: 3/2; }
+  .ns-photos .photo-placeholder { aspect-ratio: 4/5; }
 
   @media (max-width: 680px) {
     .ns-inner { grid-template-columns: 1fr; }
     .ns-inner--reversed { direction: ltr; }
-    .ns-photos { flex-direction: row; }
-    .ns-photos .photo-placeholder { aspect-ratio: 1; }
+    .ns-photos .photo-placeholder { aspect-ratio: 4/3; }
   }
 </style>

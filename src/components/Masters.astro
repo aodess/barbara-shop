@@ -17,44 +17,82 @@ const masters = content.masters;
       </h2>
     </div>
 
-    <div class="masters-box">
-      <div class="masters-box-deco" aria-hidden="true">💋</div>
+    <div class="masters-outer">
+      <!-- Стрелка влево -->
+      <button class="m-arrow m-arrow--prev" id="m-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
 
-      <div class="splide masters-splide" id="masters-splide" aria-label="Our Masters">
-        <div class="splide__track">
-          <ul class="splide__list">
-            {masters.map((master) => (
-              <li class="splide__slide">
-                <div class="master-card">
-                  <div class="master-emoji">{master.emoji}</div>
-                  <h3 class="master-name">{pick(master.name, lang)}</h3>
-                  <p class="master-role">{pick(master.role, lang)}</p>
-                  <div class="master-exp">
-                    {master.experienceYears}+ {pick({ ru: 'лет', he: 'שנות', en: 'yrs' }, lang)}
+      <div class="masters-box">
+        <div class="splide masters-splide" id="masters-splide" aria-label="Our Masters">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {masters.map((master, idx) => (
+                <li class="splide__slide">
+                  <div class="master-card">
+
+                    <!-- SVG иконка мастера -->
+                    <div class="master-icon">
+                      {idx === 0 && (
+                        <!-- Ножницы — мастер причёсок -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="master-svg">
+                          <circle cx="6" cy="6" r="3"/>
+                          <circle cx="6" cy="18" r="3"/>
+                          <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                          <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                          <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                        </svg>
+                      )}
+                      {idx === 1 && (
+                        <!-- Искра — мастер маникюра -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="master-svg">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        </svg>
+                      )}
+                      {idx === 2 && (
+                        <!-- Капля — косметолог -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="master-svg">
+                          <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                        </svg>
+                      )}
+                      {idx > 2 && (
+                        <!-- Сердце — дополнительный мастер -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="master-svg">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                      )}
+                    </div>
+
+                    <h3 class="master-name">{pick(master.name, lang)}</h3>
+                    <p class="master-role">{pick(master.role, lang)}</p>
+                    <div class="master-exp">
+                      {master.experienceYears}+ {pick({ ru: 'лет опыта', he: 'שנות ניסיון', en: 'yrs exp' }, lang)}
+                    </div>
+                    <ul class="master-tags">
+                      {(pick(master.specialties, lang) as string[]).map((s: string) => (
+                        <li class="master-tag">{s}</li>
+                      ))}
+                    </ul>
+
+                    <div class="photo-placeholder" style="aspect-ratio:1;border-radius:50%;max-width:90px;margin:14px auto 0;">
+                      <span class="photo-placeholder-icon" style="font-size:1.4rem;">📸</span>
+                    </div>
                   </div>
-                  <ul class="master-tags">
-                    {(pick(master.specialties, lang) as string[]).map((s: string) => (
-                      <li class="master-tag">{s}</li>
-                    ))}
-                  </ul>
-                  <div class="photo-placeholder" style="aspect-ratio:1;border-radius:50%;max-width:100px;margin:12px auto 0;">
-                    <span class="photo-placeholder-icon" style="font-size:1.4rem;">📸</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+
+        <p class="masters-hint">
+          {pick({ ru: '← листай →', he: '← גלול →', en: '← swipe →' }, lang)}
+        </p>
       </div>
 
-      <div class="masters-arrows">
-        <button class="m-prev" aria-label="Previous">‹</button>
-        <button class="m-next" aria-label="Next">›</button>
-      </div>
-
-      <p class="masters-hint">
-        {pick({ ru: '← листай →', he: '← גלול →', en: '← swipe →' }, lang)}
-      </p>
+      <!-- Стрелка вправо -->
+      <button class="m-arrow m-arrow--next" id="m-next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
 
   </div>
@@ -62,55 +100,93 @@ const masters = content.masters;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
-  var sp = new Splide('#masters-splide', {
-    type:         'loop',
-    perPage:      1,
-    autoplay:     true,
-    interval:     3500,
-    pauseOnHover: true,
-    pauseOnFocus: true,
-    arrows:       false,
-    pagination:   false,
-  });
-  sp.mount();
+    var sp = new Splide('#masters-splide', {
+      type:         'loop',
+      perPage:      1,
+      autoplay:     true,
+      interval:     3500,
+      pauseOnHover: true,
+      pauseOnFocus: true,
+      arrows:       false,
+      pagination:   false,
+    });
+    sp.mount();
 
-  var track = document.querySelector('#masters-splide .splide__track');
-  if (track) {
-    track.addEventListener('touchstart', function() { sp.Components.Autoplay.pause(); }, { passive: true });
-    track.addEventListener('mousedown',  function() { sp.Components.Autoplay.pause(); });
-  }
+    var track = document.querySelector('#masters-splide .splide__track');
+    if (track) {
+      track.addEventListener('touchstart', function() { sp.Components.Autoplay.pause(); }, { passive: true });
+      track.addEventListener('mousedown',  function() { sp.Components.Autoplay.pause(); });
+    }
 
-  var prev = document.querySelector('.m-prev');
-  var next = document.querySelector('.m-next');
-  prev && prev.addEventListener('click', function() { sp.go('<'); });
-  next && next.addEventListener('click', function() { sp.go('>'); });
+    var prev = document.getElementById('m-prev');
+    var next = document.getElementById('m-next');
+    prev && prev.addEventListener('click', function() { sp.go('<'); });
+    next && next.addEventListener('click', function() { sp.go('>'); });
   });
 </script>
 
 <style>
   .masters-section { background: var(--paper); }
 
+  /* Обёртка с стрелками по бокам */
+  .masters-outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* Стрелки */
+  .m-arrow {
+    flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,133,194,0.10);
+    border: 1px solid rgba(255,133,194,0.28);
+    color: var(--rose-bright);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(255,133,194,0.15);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .m-arrow:hover {
+    background: rgba(255,133,194,0.20);
+    box-shadow: 0 0 30px rgba(255,133,194,0.35);
+    transform: scale(1.08);
+  }
+  .m-arrow svg { width: 18px; height: 18px; }
+
   .masters-box {
     position: relative;
     background: linear-gradient(145deg, rgba(255,133,194,0.06), rgba(240,216,152,0.03));
     border: 1px solid rgba(255,133,194,0.20);
     border-radius: var(--r-xl);
-    padding: clamp(28px, 5vw, 48px) clamp(16px, 4vw, 40px) 20px;
+    padding: clamp(28px, 5vw, 48px) clamp(16px, 4vw, 40px) 16px;
     overflow: hidden;
-    max-width: 460px; margin: 0 auto;
-  }
-  .masters-box-deco {
-    position: absolute; top: 14px; right: 18px;
-    font-size: 1.6rem; opacity: 0.12; pointer-events: none; line-height: 1;
+    width: min(420px, 100%);
   }
 
   .master-card {
     display: flex; flex-direction: column; align-items: center;
     text-align: center; padding: 8px 16px 16px; gap: 8px;
   }
-  .master-emoji { font-size: 2.8rem; line-height: 1; }
+
+  /* SVG иконка мастера */
+  .master-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,133,194,0.20) 0%, rgba(255,133,194,0.05) 100%);
+    border: 1px solid rgba(255,133,194,0.35);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px rgba(255,133,194,0.22), inset 0 1px 0 rgba(255,255,255,0.08);
+    margin-bottom: 4px;
+  }
+  .master-svg {
+    width: 30px; height: 30px;
+    color: var(--rose-bright);
+    filter: drop-shadow(0 0 10px rgba(255,133,194,1.0)) drop-shadow(0 0 20px rgba(255,133,194,0.60));
+  }
+
   .master-name {
-    font-family: var(--font-script); font-size: 1.8rem; font-weight: 600;
+    font-family: var(--font-script); font-size: 1.9rem; font-weight: 600;
     background: linear-gradient(135deg, var(--rose-bright), var(--gold));
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -120,8 +196,9 @@ const masters = content.masters;
   .master-exp {
     display: inline-block;
     padding: 4px 14px; border-radius: 999px;
-    background: rgba(255,133,194,0.10); border: 1px solid rgba(255,133,194,0.20);
+    background: rgba(255,133,194,0.10); border: 1px solid rgba(255,133,194,0.22);
     color: var(--rose-bright); font-size: 0.74rem; font-weight: 600;
+    letter-spacing: 0.05em;
   }
   .master-tags {
     list-style: none; margin: 2px 0 0; padding: 0;
@@ -133,20 +210,14 @@ const masters = content.masters;
     color: var(--gold); font-size: 0.73rem;
   }
 
-  .masters-arrows {
-    display: flex; justify-content: center; gap: 10px; margin: 14px 0 4px;
-  }
-  .masters-arrows button {
-    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-    background: rgba(255,133,194,0.10); border: 1px solid rgba(255,133,194,0.25);
-    color: var(--rose-bright); font-size: 1.2rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-  .masters-arrows button:hover { background: rgba(255,133,194,0.20); }
-
   .masters-hint {
     text-align: center; color: var(--ink-mute); font-size: 0.74rem;
-    letter-spacing: 0.16em; margin: 6px 0 0; padding-bottom: 4px;
+    letter-spacing: 0.16em; margin: 10px 0 0; padding-bottom: 4px;
+  }
+
+  @media (max-width: 520px) {
+    .masters-outer { gap: 6px; }
+    .m-arrow { width: 34px; height: 34px; }
+    .m-arrow svg { width: 14px; height: 14px; }
   }
 </style>

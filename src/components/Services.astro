@@ -24,43 +24,80 @@ const categories = content.hairServices;
       </p>
     </div>
 
-    <!-- Карусель -->
-    <div class="splide hair-splide" id="hair-splide" aria-label="Hair Services">
-      <div class="splide__track">
-        <ul class="splide__list">
-          {categories.map((cat) => (
-            <li class="splide__slide">
-              <div class="price-card">
-                <div class="price-card-header">
-                  <span class="price-card-emoji">{cat.emoji}</span>
-                  <div class="price-card-title">
-                    <span class="price-cat-label">
-                      {pick({ ru: 'Категория', he: 'קטגוריה', en: 'Category' }, lang)}
-                    </span>
-                    <h3 class="price-cat-name">{pick(cat.name, lang)}</h3>
+    <!-- Карусель с кастомными стрелками по бокам -->
+    <div class="hair-carousel-wrap">
+      <button class="hair-arrow hair-arrow--prev" id="hair-prev" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="splide hair-splide" id="hair-splide" aria-label="Hair Services">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {categories.map((cat, idx) => (
+              <li class="splide__slide">
+                <div class="price-card">
+                  <div class="price-card-header">
+
+                    <div class="price-card-icon">
+                      {idx === 0 && (
+                        <!-- Ножницы — выпрямление/кератин -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="cat-svg">
+                          <circle cx="6" cy="6" r="3"/>
+                          <circle cx="6" cy="18" r="3"/>
+                          <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                          <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                          <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                        </svg>
+                      )}
+                      {idx === 1 && (
+                        <!-- Капля — восстановление -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="cat-svg">
+                          <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+                        </svg>
+                      )}
+                      {idx === 2 && (
+                        <!-- Кисть — окрашивание -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="cat-svg">
+                          <path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/>
+                          <path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/>
+                          <path d="M14.5 17.5 4.5 15"/>
+                        </svg>
+                      )}
+                    </div>
+
+                    <div class="price-card-title">
+                      <span class="price-cat-label">
+                        {pick({ ru: 'Категория', he: 'קטגוריה', en: 'Category' }, lang)}
+                      </span>
+                      <h3 class="price-cat-name">{pick(cat.name, lang)}</h3>
+                    </div>
+                  </div>
+
+                  <div class="price-items">
+                    {cat.items.map((item, i) => (
+                      <div class={`price-item${i < cat.items.length - 1 ? ' price-item--border' : ''}`}>
+                        <div class="price-item-top">
+                          <span class="price-item-name">{pick(item.name, lang)}</span>
+                          <span class="price-item-price">{item.price}</span>
+                        </div>
+                        <p class="price-item-note">"{pick(item.note, lang)}"</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div class="price-card-footer">
+                    <span class="price-card-heart">♥ ♥ ♥</span>
                   </div>
                 </div>
-
-                <div class="price-items">
-                  {cat.items.map((item, i) => (
-                    <div class={`price-item${i < cat.items.length - 1 ? ' price-item--border' : ''}`}>
-                      <div class="price-item-top">
-                        <span class="price-item-name">{pick(item.name, lang)}</span>
-                        <span class="price-item-price">{item.price}</span>
-                      </div>
-                      <p class="price-item-note">"{pick(item.note, lang)}"</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div class="price-card-footer">
-                  <span class="price-card-heart">♥</span>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
+      <button class="hair-arrow hair-arrow--next" id="hair-next" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
 
     <!-- Фото галерея (место под фото) -->
@@ -80,22 +117,53 @@ const categories = content.hairServices;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
-    new Splide('#hair-splide', {
+    var sp = new Splide('#hair-splide', {
       type:       'loop',
       perPage:    1,
       gap:        '1.5rem',
       autoplay:   false,
       pagination: true,
-      arrows:     true,
-      padding:    { left: '2rem', right: '2rem' },
+      arrows:     false,
     }).mount();
+
+    var prev = document.getElementById('hair-prev');
+    var next = document.getElementById('hair-next');
+    prev && prev.addEventListener('click', function() { sp.go('<'); });
+    next && next.addEventListener('click', function() { sp.go('>'); });
   });
 </script>
 
 <style>
-  .hair-section {
-    background: var(--surface);
+  .hair-section { background: var(--surface); }
+
+  /* Обёртка карусели с кнопками по бокам */
+  .hair-carousel-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
   }
+
+  /* Стрелки */
+  .hair-arrow {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,133,194,0.10);
+    border: 1px solid rgba(255,133,194,0.30);
+    color: var(--rose-bright);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255,133,194,0.15), inset 0 1px 0 rgba(255,255,255,0.06);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .hair-arrow:hover {
+    background: rgba(255,133,194,0.22);
+    box-shadow: 0 0 36px rgba(255,133,194,0.35);
+    transform: scale(1.08);
+  }
+  .hair-arrow svg { width: 20px; height: 20px; }
+  .hair-splide { flex: 1; min-width: 0; }
 
   /* Карточка прайса */
   .price-card {
@@ -110,7 +178,7 @@ const categories = content.hairServices;
   }
   .price-card:hover {
     border-color: rgba(255,133,194,0.35);
-    box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 80px rgba(255,133,194,0.12);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 80px rgba(255,133,194,0.14);
   }
 
   .price-card-header {
@@ -119,13 +187,30 @@ const categories = content.hairServices;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(255,133,194,0.12);
   }
-  .price-card-emoji { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+
+  /* SVG иконка категории */
+  .price-card-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,133,194,0.18) 0%, rgba(255,133,194,0.06) 100%);
+    border: 1px solid rgba(255,133,194,0.30);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 24px rgba(255,133,194,0.20);
+  }
+  .cat-svg {
+    width: 26px; height: 26px;
+    color: var(--rose-bright);
+    filter: drop-shadow(0 0 8px rgba(255,133,194,0.90)) drop-shadow(0 0 16px rgba(255,133,194,0.50));
+  }
+
   .price-cat-label {
     display: block; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.22em;
     text-transform: uppercase; color: var(--rose-bright); margin-bottom: 4px;
+    text-shadow: 0 0 12px rgba(255,133,194,0.50);
   }
   .price-cat-name {
-    font-family: var(--font-script); font-size: 1.6rem; font-weight: 600;
+    font-family: var(--font-script); font-size: 1.7rem; font-weight: 600;
     color: var(--ink); margin: 0; line-height: 1.1;
   }
 
@@ -145,7 +230,7 @@ const categories = content.hairServices;
   .price-item-price {
     font-family: var(--font-display); font-weight: 600;
     font-size: 1rem; color: var(--gold); white-space: nowrap; flex-shrink: 0;
-    text-shadow: 0 0 16px rgba(240,216,152,0.40);
+    text-shadow: 0 0 16px rgba(240,216,152,0.50);
   }
   .price-item-note {
     font-size: 0.82rem; color: var(--ink-mute); font-style: italic;
@@ -153,7 +238,11 @@ const categories = content.hairServices;
   }
 
   .price-card-footer { margin-top: auto; padding-top: 16px; text-align: center; }
-  .price-card-heart { color: var(--rose-bright); font-size: 1.1rem; opacity: 0.4; }
+  .price-card-heart {
+    color: var(--rose-bright); font-size: 0.85rem;
+    opacity: 0.5; letter-spacing: 8px;
+    text-shadow: 0 0 10px rgba(255,133,194,0.60);
+  }
 
   /* Фото */
   .hair-photos { margin-top: clamp(36px,6vw,56px); }
@@ -165,6 +254,9 @@ const categories = content.hairServices;
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
   }
   @media (max-width: 600px) {
+    .hair-carousel-wrap { gap: 6px; }
+    .hair-arrow { width: 36px; height: 36px; }
+    .hair-arrow svg { width: 16px; height: 16px; }
     .hair-photos-grid { grid-template-columns: 1fr 1fr; }
     .hair-photos-grid .photo-placeholder:last-child { display: none; }
   }
