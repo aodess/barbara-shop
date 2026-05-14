@@ -2,268 +2,217 @@
 import content from '../data/content.json';
 import { pick } from '../lib/i18n.js';
 import { computeStatus } from '../lib/businessHours.js';
-import { whatsappLink } from '../lib/seo.js';
 const { lang } = Astro.props;
 const status = computeStatus(content.hours);
-const whatsapp = content.contacts.whatsapp || '+972501234567';
-const photos = content.brand.heroPhotos || [];
-const waMsg = pick({ ru: 'Здравствуйте! Хочу записаться.', he: 'שלום! אני רוצה לקבוע תור.', en: 'Hello! I would like to book a visit.' }, lang);
 ---
 
 <section class="hero" id="home">
-  <!-- rotating background photos -->
-  <div class="hero-bg" id="hero-bg">
-    {photos.map((src, i) => (
-      <div class={`hero-bg-slide${i === 0 ? ' is-active' : ''}`} style={`background-image:url('${src}')`}></div>
-    ))}
-    {photos.length === 0 && (
-      <div class="hero-bg-slide is-active" style="background: var(--surface);"></div>
-    )}
+  <!-- Фоновые декоративные элементы -->
+  <div class="hero-deco-bg" aria-hidden="true">
+    <span class="deco-heart deco-h1">♥</span>
+    <span class="deco-heart deco-h2">💋</span>
+    <span class="deco-heart deco-h3">♥</span>
+    <span class="deco-heart deco-h4">✦</span>
+    <span class="deco-heart deco-h5">♥</span>
   </div>
 
-  <!-- gradient overlays -->
-  <div class="hero-overlay-dark"></div>
-  <div class="hero-overlay-color"></div>
+  <div class="container">
+    <div class="hero-inner">
 
-  <div class="container hero-grid">
-    <!-- LEFT: copy -->
-    <div class="hero-copy fade-up">
-      <span class="eyebrow hero-eyebrow">
-        {pick({ ru: 'Салон красоты · Бат-Ям', he: 'סלון יופי · בת ים', en: 'Beauty Salon · Bat Yam' }, lang)}
-      </span>
+      <!-- Логотип в центре -->
+      <div class="hero-logo-wrap fade-up">
+        <div class="hero-logo-ring">
+          <img class="hero-logo-img" src={content.brand.logo || '/images/logo.jpg'} alt={content.brand.name} />
+        </div>
+        <div class="hero-logo-glow" aria-hidden="true"></div>
+      </div>
 
-      <h1 class="hero-title">
-        <span class="hero-title-main text-gradient-gold">{content.brand.name}</span>
-      </h1>
+      <!-- Название -->
+      <div class="hero-title-wrap fade-up" data-delay="1">
+        <p class="hero-eyebrow-top">
+          {pick({ ru: '✦ Салон красоты · Петах-Тиква ✦', he: '✦ סלון יופי · פתח תקווה ✦', en: '✦ Beauty Salon · Petah Tikva ✦' }, lang)}
+        </p>
+        <h1 class="hero-title">{content.brand.name}</h1>
+        <p class="hero-subtitle">{pick(content.salon.description, lang)}</p>
+      </div>
 
-      <p class="hero-text">{pick(content.salon.description, lang)}</p>
-
-      <div class="hero-actions">
-        <button class="btn btn-primary hero-btn-book" type="button" data-booking-open>
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <!-- CTA -->
+      <div class="hero-actions fade-up" data-delay="2">
+        <button class="btn btn-primary hero-book-btn" type="button" id="hero-book-btn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           {pick({ ru: 'Записаться', he: 'קביעת תור', en: 'Book Now' }, lang)}
         </button>
-        <a class="btn btn-whatsapp" href={whatsappLink(whatsapp, waMsg)} target="_blank" rel="noreferrer">
-          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <a
+          class="btn btn-whatsapp"
+          href={`https://wa.me/${(content.contacts.whatsapp || '').replace(/\D/g,'')}`}
+          target="_blank" rel="noreferrer"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" class="btn-icon"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           WhatsApp
         </a>
       </div>
 
-      <div class="hero-meta">
+      <!-- Статус + рейтинг -->
+      <div class="hero-meta fade-up" data-delay="3">
         <span class={`status-pill${status.open ? ' status-open' : ' status-closed'}`}>
           <span class="status-dot"></span>
           {status.open
             ? pick({ ru: 'Открыто', he: 'פתוח', en: 'Open now' }, lang)
             : pick({ ru: 'Закрыто', he: 'סגור', en: 'Closed' }, lang)}
         </span>
-        <span class="hero-address">
-          <svg class="address-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          {pick(content.salon.city, lang)}
-        </span>
+        <div class="hero-rating">
+          <span class="hero-stars">★★★★★</span>
+          <span class="hero-rating-num">{content.googleReviews.rating}</span>
+          <span class="hero-rating-count">({content.googleReviews.count}+)</span>
+        </div>
       </div>
-    </div>
 
-    <!-- RIGHT: brand card -->
-    <div class="hero-card fade-up" data-delay="2">
-      <div class="hero-card-glow"></div>
-      <div class="hero-ring-wrap">
-        <svg class="hero-ring-svg" viewBox="0 0 220 220" fill="none">
-          <circle cx="110" cy="110" r="100" stroke="url(#rg1)" stroke-width="1" stroke-dasharray="3 9" opacity="0.6"/>
-          <circle cx="110" cy="110" r="82" stroke="url(#rg2)" stroke-width="0.5" opacity="0.35"/>
-          <polygon points="110,9 114,14 110,19 106,14" fill="#DDB87A" opacity="0.8"/>
-          <polygon points="201,110 196,114 191,110 196,106" fill="#DDB87A" opacity="0.8"/>
-          <polygon points="110,201 114,196 110,191 106,196" fill="#E090B4" opacity="0.8"/>
-          <polygon points="19,110 24,114 29,110 24,106" fill="#E090B4" opacity="0.8"/>
-          <defs>
-            <linearGradient id="rg1" x1="0" y1="0" x2="220" y2="220" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#DDB87A"/>
-              <stop offset="100%" stop-color="#E090B4"/>
-            </linearGradient>
-            <linearGradient id="rg2" x1="220" y1="0" x2="0" y2="220" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#A096D4"/>
-              <stop offset="100%" stop-color="#DDB87A"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <img class="hero-logo-img" src={content.brand.logo || '/images/logo.jpg'} alt={content.brand.name} />
+      <!-- Прокрутка вниз -->
+      <div class="hero-scroll" aria-hidden="true">
+        <div class="scroll-dot"></div>
+        <div class="scroll-dot"></div>
+        <div class="scroll-dot"></div>
       </div>
-      <p class="hero-card-label">✦ Luxury Beauty Studio ✦</p>
-      <div class="hero-card-stats">
-        <div class="hero-stat">
-          <span class="stat-num text-gradient-gold">12+</span>
-          <span class="stat-text">{pick({ ru: 'лет опыта', he: 'שנות ניסיון', en: 'years' }, lang)}</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="hero-stat">
-          <span class="stat-num text-gradient-rose">{content.googleReviews.rating}</span>
-          <span class="stat-text">Google</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="hero-stat">
-          <span class="stat-num text-gradient-gold">{content.googleReviews.count}+</span>
-          <span class="stat-text">{pick({ ru: 'отзывов', he: 'ביקורות', en: 'reviews' }, lang)}</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- scroll indicator -->
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
+    </div>
   </div>
 </section>
 
 <script is:inline>
-  (function() {
-    var slides = document.querySelectorAll('.hero-bg-slide');
-    if (slides.length > 1) {
-      var current = 0;
-      setInterval(function() {
-        slides[current].classList.remove('is-active');
-        current = (current + 1) % slides.length;
-        slides[current].classList.add('is-active');
-      }, 5000);
-    }
-  })();
+  // Открываем popup "скоро" при клике на кнопку
+  var heroBook = document.getElementById('hero-book-btn');
+  var bookingSoon = document.getElementById('booking-soon');
+  if (heroBook && bookingSoon) {
+    heroBook.removeAttribute('disabled');
+    heroBook.addEventListener('click', function() {
+      bookingSoon.classList.add('is-open');
+    });
+  }
 </script>
 
 <style>
   .hero {
     position: relative;
-    min-height: clamp(660px, 90vh, 900px);
-    display: flex;
-    align-items: center;
+    min-height: clamp(88vh, 90vh, 100vh);
+    display: flex; align-items: center;
     overflow: hidden;
-    color: var(--ink);
+    padding-block: clamp(80px, 12vw, 120px);
   }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-  }
-  .hero-bg-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.6s ease;
-  }
-  .hero-bg-slide.is-active { opacity: 1; }
-  .hero-overlay-dark {
-    position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(125deg, rgba(12,12,16,0.82) 0%, rgba(12,12,16,0.50) 100%);
-  }
-  .hero-overlay-color {
-    position: absolute; inset: 0; z-index: 1;
-    background:
-      radial-gradient(70% 60% at 10% 15%, rgba(224,144,180,0.18), transparent 65%),
-      radial-gradient(50% 45% at 95% 90%, rgba(160,150,212,0.12), transparent 70%);
-  }
-  .hero-grid {
-    position: relative; z-index: 3;
-    display: grid;
-    grid-template-columns: minmax(0,1.3fr) minmax(280px,0.7fr);
-    gap: 60px;
-    align-items: center;
-    padding-block: clamp(80px,12vw,140px);
-  }
-  .hero-eyebrow { margin-bottom: 24px; display: block; }
-  .hero-title { margin-bottom: 20px; }
-  .hero-title-main {
-    display: block;
-    font-size: clamp(3rem,9vw,6.5rem);
-    font-family: var(--font-display);
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -0.03em;
-  }
-  .hero-text {
-    color: var(--ink-soft); font-size: 1.1rem; line-height: 1.72;
-    max-width: 500px; margin: 0 0 2.2rem;
-  }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 32px; }
-  .hero-btn-book { font-size: 1rem; padding: 18px 36px; }
-  .hero-meta { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
-  .hero-address {
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--ink-soft); font-size: 0.92rem;
-  }
-  .address-icon { width: 15px; height: 15px; color: var(--gold); }
 
-  /* Hero card */
-  .hero-card {
-    position: relative;
-    background: linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
-    border: 1px solid rgba(221,184,122,0.20);
-    border-radius: 40px;
-    padding: 44px 32px 36px;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-    backdrop-filter: blur(28px);
-    box-shadow:
-      0 0 0 1px rgba(221,184,122,0.08) inset,
-      0 40px 80px rgba(0,0,0,0.45),
-      0 0 80px rgba(221,184,122,0.08);
+  /* Декоративные сердечки-фон */
+  .hero-deco-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .deco-heart {
+    position: absolute;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1;
+    opacity: 0.06;
+    user-select: none;
+    animation: floatHeart 8s ease-in-out infinite;
   }
-  .hero-card-glow {
-    position: absolute; inset: -40px; z-index: -1;
-    background: radial-gradient(circle at 50% 40%, rgba(221,184,122,0.15), transparent 65%);
-    filter: blur(20px);
-    animation: cardGlowPulse 4s ease-in-out infinite;
+  .deco-h1 { top: 8%;  left: 5%;   font-size: clamp(4rem,10vw,9rem); animation-delay: 0s; }
+  .deco-h2 { top: 12%; right: 6%;  font-size: clamp(3rem, 7vw,7rem); animation-delay: 1.5s; }
+  .deco-h3 { bottom: 20%; left: 8%; font-size: clamp(2.5rem,6vw,6rem); animation-delay: 3s; }
+  .deco-h4 { bottom: 15%; right: 5%; font-size: clamp(2rem,5vw,5rem); animation-delay: 4.5s; opacity: 0.08; color: var(--gold); }
+  .deco-h5 { top: 50%; left: 2%;  font-size: clamp(1.5rem,4vw,4rem); animation-delay: 2s; }
+
+  @keyframes floatHeart {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50%      { transform: translateY(-20px) rotate(5deg); }
   }
-  @keyframes cardGlowPulse {
-    0%,100% { opacity: 0.6; transform: scale(0.95); }
-    50% { opacity: 1; transform: scale(1.05); }
-  }
-  .hero-ring-wrap {
-    position: relative;
-    width: 160px; height: 160px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px;
-  }
-  .hero-ring-svg {
-    position: absolute; inset: -30px;
-    width: calc(100% + 60px); height: calc(100% + 60px);
-    animation: ringRotate 30s linear infinite;
-  }
-  @keyframes ringRotate { to { transform: rotate(360deg); } }
-  .hero-logo-img {
-    width: 120px; height: 120px; border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(221,184,122,0.35);
-    box-shadow: 0 0 40px rgba(221,184,122,0.20), 0 8px 32px rgba(0,0,0,0.5);
+
+  .hero-inner {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: clamp(20px,3vw,32px);
     position: relative; z-index: 2;
   }
-  .hero-card-label {
-    color: var(--gold); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
-    margin: 0 0 24px; text-shadow: 0 0 20px rgba(221,184,122,0.50);
-  }
-  .hero-card-stats {
-    display: flex; align-items: center; gap: 20px;
-    width: 100%;
-  }
-  .hero-stat { flex: 1; }
-  .stat-num { display: block; font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; line-height: 1; }
-  .stat-text { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); margin-top: 4px; }
-  .stat-divider { width: 1px; height: 40px; background: var(--line-strong); flex-shrink: 0; }
 
-  /* Scroll indicator */
+  /* Логотип */
+  .hero-logo-wrap { position: relative; }
+  .hero-logo-ring {
+    width: clamp(110px,20vw,150px); height: clamp(110px,20vw,150px);
+    border-radius: 50%;
+    border: 2px solid rgba(255,133,194,0.40);
+    box-shadow:
+      0 0 0 8px rgba(255,133,194,0.06),
+      0 0 60px rgba(255,133,194,0.20),
+      0 0 120px rgba(255,133,194,0.08);
+    overflow: hidden;
+    position: relative; z-index: 2;
+    animation: logoBreath 5s ease-in-out infinite;
+  }
+  @keyframes logoBreath {
+    0%,100% { box-shadow: 0 0 0 8px rgba(255,133,194,0.06), 0 0 60px rgba(255,133,194,0.20), 0 0 120px rgba(255,133,194,0.08); }
+    50%      { box-shadow: 0 0 0 14px rgba(255,133,194,0.10), 0 0 80px rgba(255,133,194,0.28), 0 0 160px rgba(255,133,194,0.12); }
+  }
+  .hero-logo-img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-logo-glow {
+    position: absolute; inset: -30px; z-index: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,133,194,0.18), transparent 65%);
+    filter: blur(16px);
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%,100% { opacity: 0.6; transform: scale(0.9); }
+    50%      { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* Заголовок */
+  .hero-eyebrow-top {
+    font-size: 0.70rem; font-weight: 600; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--rose-bright); margin: 0;
+    text-shadow: 0 0 16px rgba(255,133,194,0.50);
+  }
+  .hero-title {
+    font-family: var(--font-script);
+    font-size: clamp(3.2rem, 11vw, 7rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--rose-bright) 0%, var(--gold) 60%, var(--rose-deep) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1; margin: 0 0 6px;
+    text-shadow: none;
+    filter: drop-shadow(0 0 40px rgba(255,133,194,0.25));
+  }
+  .hero-subtitle {
+    color: var(--ink-soft); font-size: clamp(0.9rem,2.5vw,1.05rem);
+    max-width: 480px; line-height: 1.75; margin: 0;
+  }
+
+  /* Кнопки */
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .hero-book-btn { font-size: 0.95rem; padding: 14px 32px; }
+
+  /* Мета */
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 16px;
+    align-items: center; justify-content: center;
+  }
+  .hero-rating { display: flex; align-items: center; gap: 6px; }
+  .hero-stars { color: #FFD700; font-size: 0.85rem; letter-spacing: 2px; }
+  .hero-rating-num {
+    font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+    color: var(--gold);
+  }
+  .hero-rating-count { color: var(--ink-mute); font-size: 0.85rem; }
+
+  /* Скролл-индикатор */
   .hero-scroll {
-    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-    z-index: 4;
+    display: flex; gap: 6px; align-items: center; margin-top: 8px;
+    animation: scrollBounce 2s ease-in-out infinite;
   }
-  .scroll-line {
-    width: 1px; height: 52px; margin: 0 auto;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
+  .scroll-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--rose-bright); opacity: 0.4;
   }
-  @keyframes scrollPulse {
-    0%,100% { opacity: 0.4; transform: scaleY(0.8); }
-    50% { opacity: 1; transform: scaleY(1); }
+  .scroll-dot:nth-child(2) { opacity: 0.7; animation: dotPulse 2s ease-in-out 0.2s infinite; }
+  .scroll-dot:nth-child(3) { opacity: 0.3; animation: dotPulse 2s ease-in-out 0.4s infinite; }
+  @keyframes scrollBounce {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(6px); }
   }
-
-  @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-    .hero-card { max-width: 400px; margin: 0 auto; }
-    .hero-title-main { font-size: clamp(2.6rem,10vw,4rem); }
+  @keyframes dotPulse {
+    0%,100% { opacity: 0.4; }
+    50%      { opacity: 1; }
   }
 </style>

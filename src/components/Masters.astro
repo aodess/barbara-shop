@@ -1,138 +1,152 @@
 ---
 import content from '../data/content.json';
-import { t, pick } from '../lib/i18n.js';
+import { pick } from '../lib/i18n.js';
 const { lang } = Astro.props;
-const tr = t(lang);
+const masters = content.masters;
 ---
-<section class="masters" id="masters">
-  <div class="masters-glow"></div>
+
+<section class="masters-section" id="masters">
   <div class="container">
-    <div class="masters-header">
-      <span class="eyebrow">{tr.masters.eyebrow}</span>
-      <h2>{tr.masters.title}</h2>
-      <p class="section-intro">{pick({ ru: 'Наша команда — сердце салона. Профессионалы с опытом, страстью и вниманием к каждому клиенту.', he: 'הצוות שלנו הוא לב הסלון. מקצוענים עם ניסיון, תשוקה ותשומת לב לכל לקוח.', en: 'Our team is the heart of the salon. Professionals with experience, passion and care for every client.' }, lang)}</p>
+
+    <div class="section-head">
+      <span class="eyebrow">
+        {pick({ ru: 'Наша команда', he: 'הצוות שלנו', en: 'Our Team' }, lang)}
+      </span>
+      <h2>
+        {pick({ ru: 'Мастера', he: 'המאסטרות שלנו', en: 'Our Artists' }, lang)}
+      </h2>
     </div>
-    <div class="masters-grid">
-      {content.masters.map(master => (
-        <article class="master-card">
-          <div class="master-photo-wrap">
-            <img src={master.photo} alt={master.name[lang] || master.name.ru} loading="lazy" />
-            <div class="master-photo-overlay"></div>
-            <div class="master-badge">
-              <span class="master-exp-num">{master.experienceYears}</span>
-              <span class="master-exp-text">{tr.masters.experience}</span>
-            </div>
-          </div>
-          <div class="master-body">
-            <h3 class="master-name text-gradient-gold">{master.name[lang] || master.name.ru}</h3>
-            <p class="master-role">{master.role[lang] || master.role.ru}</p>
-            <div class="master-skills-wrap">
-              {(master.specialties[lang] || master.specialties.ru).map(item => (
-                <span class="skill-tag">{item}</span>
-              ))}
-            </div>
-            <button class="master-book-btn" type="button" data-booking-open>
-              {pick({ ru: 'Записаться', he: 'קביעת תור', en: 'Book' }, lang)}
-            </button>
-          </div>
-        </article>
-      ))}
+
+    <div class="masters-box">
+      <div class="masters-box-deco" aria-hidden="true">💋</div>
+
+      <div class="splide masters-splide" id="masters-splide" aria-label="Our Masters">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {masters.map((master) => (
+              <li class="splide__slide">
+                <div class="master-card">
+                  <div class="master-emoji">{master.emoji}</div>
+                  <h3 class="master-name">{pick(master.name, lang)}</h3>
+                  <p class="master-role">{pick(master.role, lang)}</p>
+                  <div class="master-exp">
+                    {master.experienceYears}+ {pick({ ru: 'лет', he: 'שנות', en: 'yrs' }, lang)}
+                  </div>
+                  <ul class="master-tags">
+                    {(pick(master.specialties, lang) as string[]).map((s: string) => (
+                      <li class="master-tag">{s}</li>
+                    ))}
+                  </ul>
+                  <div class="photo-placeholder" style="aspect-ratio:1;border-radius:50%;max-width:100px;margin:12px auto 0;">
+                    <span class="photo-placeholder-icon" style="font-size:1.4rem;">📸</span>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="masters-arrows">
+        <button class="m-prev" aria-label="Previous">‹</button>
+        <button class="m-next" aria-label="Next">›</button>
+      </div>
+
+      <p class="masters-hint">
+        {pick({ ru: '← листай →', he: '← גלול →', en: '← swipe →' }, lang)}
+      </p>
     </div>
+
   </div>
 </section>
 
-<style>
-  .masters { position: relative; overflow: hidden; background: var(--surface); }
-  .masters-glow {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 700px; height: 400px;
-    background: radial-gradient(ellipse, rgba(160,150,212,0.08), transparent 70%);
-    pointer-events: none;
-  }
-  .masters-header { max-width: 640px; margin-bottom: 48px; }
-  .masters-header h2 { margin: 16px 0 16px; }
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+  var sp = new Splide('#masters-splide', {
+    type:         'loop',
+    perPage:      1,
+    autoplay:     true,
+    interval:     3500,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    arrows:       false,
+    pagination:   false,
+  });
+  sp.mount();
 
-  .masters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 28px;
+  var track = document.querySelector('#masters-splide .splide__track');
+  if (track) {
+    track.addEventListener('touchstart', function() { sp.Components.Autoplay.pause(); }, { passive: true });
+    track.addEventListener('mousedown',  function() { sp.Components.Autoplay.pause(); });
+  }
+
+  var prev = document.querySelector('.m-prev');
+  var next = document.querySelector('.m-next');
+  prev && prev.addEventListener('click', function() { sp.go('<'); });
+  next && next.addEventListener('click', function() { sp.go('>'); });
+  });
+</script>
+
+<style>
+  .masters-section { background: var(--paper); }
+
+  .masters-box {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255,133,194,0.06), rgba(240,216,152,0.03));
+    border: 1px solid rgba(255,133,194,0.20);
+    border-radius: var(--r-xl);
+    padding: clamp(28px, 5vw, 48px) clamp(16px, 4vw, 40px) 20px;
+    overflow: hidden;
+    max-width: 460px; margin: 0 auto;
+  }
+  .masters-box-deco {
+    position: absolute; top: 14px; right: 18px;
+    font-size: 1.6rem; opacity: 0.12; pointer-events: none; line-height: 1;
   }
 
   .master-card {
-    background: linear-gradient(155deg, var(--surface-raised) 0%, var(--surface-high) 100%);
-    border: 1px solid var(--line);
-    border-radius: 28px; overflow: hidden;
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.30);
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 8px 16px 16px; gap: 8px;
   }
-  .master-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(221,184,122,0.40);
-    box-shadow: 0 24px 56px rgba(221,184,122,0.15), 0 0 80px rgba(221,184,122,0.08);
-  }
-
-  .master-photo-wrap {
-    position: relative;
-    aspect-ratio: 4/3; overflow: hidden;
-  }
-  .master-photo-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-  .master-card:hover .master-photo-wrap img { transform: scale(1.06); }
-  .master-photo-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(12,12,16,0.60) 0%, transparent 55%);
-  }
-  .master-badge {
-    position: absolute; bottom: 16px; right: 16px;
-    background: linear-gradient(135deg, rgba(221,184,122,0.90), rgba(184,146,42,0.85));
-    border-radius: 16px; padding: 10px 14px; text-align: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  }
-  .master-exp-num {
-    display: block; font-family: var(--font-display); font-size: 1.5rem;
-    font-weight: 600; color: #fff; line-height: 1;
-  }
-  .master-exp-text {
-    display: block; font-size: 0.65rem; color: rgba(255,255,255,0.85);
-    letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px;
-  }
-
-  .master-body { padding: 26px 24px 24px; }
+  .master-emoji { font-size: 2.8rem; line-height: 1; }
   .master-name {
-    font-size: 1.5rem; margin: 0 0 6px;
-    font-family: var(--font-display); font-weight: 500;
+    font-family: var(--font-script); font-size: 1.8rem; font-weight: 600;
+    background: linear-gradient(135deg, var(--rose-bright), var(--gold));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0; line-height: 1.1;
   }
-  .master-role {
-    color: var(--rose); font-size: 0.88rem; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 18px;
-    text-shadow: 0 0 16px rgba(224,144,180,0.40);
+  .master-role { color: var(--ink-soft); font-size: 0.86rem; margin: 0; font-style: italic; }
+  .master-exp {
+    display: inline-block;
+    padding: 4px 14px; border-radius: 999px;
+    background: rgba(255,133,194,0.10); border: 1px solid rgba(255,133,194,0.20);
+    color: var(--rose-bright); font-size: 0.74rem; font-weight: 600;
   }
-  .master-skills-wrap {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 22px;
+  .master-tags {
+    list-style: none; margin: 2px 0 0; padding: 0;
+    display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;
   }
-  .skill-tag {
-    padding: 6px 14px; border-radius: 999px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.10);
-    color: var(--ink-soft); font-size: 0.80rem;
-    transition: border-color 0.2s, color 0.2s;
+  .master-tag {
+    padding: 3px 11px; border-radius: 999px;
+    background: rgba(240,216,152,0.08); border: 1px solid rgba(240,216,152,0.16);
+    color: var(--gold); font-size: 0.73rem;
   }
-  .master-card:hover .skill-tag { border-color: rgba(221,184,122,0.25); color: var(--ink); }
-  .master-book-btn {
-    width: 100%; padding: 13px;
-    background: linear-gradient(135deg, rgba(221,184,122,0.12), rgba(224,144,180,0.08));
-    border: 1px solid rgba(221,184,122,0.28); border-radius: 14px;
-    color: var(--gold); font-size: 0.9rem; font-weight: 600; cursor: pointer;
-    letter-spacing: 0.04em; font-family: var(--font-body);
-    transition: all 0.25s ease;
+
+  .masters-arrows {
+    display: flex; justify-content: center; gap: 10px; margin: 14px 0 4px;
   }
-  .master-book-btn:hover {
-    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
-    border-color: var(--gold); color: var(--paper);
-    box-shadow: 0 6px 24px rgba(221,184,122,0.30);
+  .masters-arrows button {
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    background: rgba(255,133,194,0.10); border: 1px solid rgba(255,133,194,0.25);
+    color: var(--rose-bright); font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .masters-arrows button:hover { background: rgba(255,133,194,0.20); }
+
+  .masters-hint {
+    text-align: center; color: var(--ink-mute); font-size: 0.74rem;
+    letter-spacing: 0.16em; margin: 6px 0 0; padding-bottom: 4px;
   }
 </style>

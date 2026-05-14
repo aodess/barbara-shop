@@ -2,45 +2,34 @@
   "brand": {
     "name": "Barbara Shop",
     "tagline": {
-      "ru": "Салон красоты в Бат-Яме — профессиональный уход и стиль",
-      "he": "סלון יופי בבת ים — טיפוח מקצועי וסטייל",
-      "en": "Beauty salon in Bat Yam — professional care and style"
+      "ru": "Твой beauty-бар в Петах-Тикве",
+      "he": "הבר יופי שלך בפתח תקווה",
+      "en": "Your beauty bar in Petah Tikva"
     },
-    "logo": "/images/logo.jpg",
-    "heroPhotos": [
-      "/images/photo_2026-05-14_11-23-24.jpg",
-      "/images/photo_2026-05-14_11-23-32.jpg",
-      "/images/photo_2026-05-14_11-23-37.jpg"
-    ]
+    "logo": "/images/logo.jpg"
   },
 
   "salon": {
     "address": {
-      "ru": "ул. Хамелеон, 12, Бат-Ям, 59100",
-      "he": "רחוב חמזון 12, בת ים, 59100",
-      "en": "Hameleon St. 12, Bat Yam, 59100"
+      "ru": "Петах-Тиква",
+      "he": "פתח תקווה",
+      "en": "Petah Tikva"
     },
     "city": {
-      "ru": "Бат-Ям",
-      "he": "בת ים",
-      "en": "Bat Yam"
+      "ru": "Петах-Тиква",
+      "he": "פתח תקווה",
+      "en": "Petah Tikva"
     },
     "country": "IL",
     "countryCode": "IL",
-    "postalCode": "59100",
-    "geo": { "lat": 32.0170, "lng": 34.7510 },
-    "googleMapsUrl": "https://www.google.com/maps/search/Bat+Yam+beauty+salon",
-    "googleMapsEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3384.3699999999998!2d34.7510!3d32.0170!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDAxJzAxLjIiTiAzNMK451eyJpNDAuMyJF!5e0!3m2!1sru!2sil!4v1234567890",
-    "photos": [
-      "/images/photo_2026-05-14_11-23-24.jpg",
-      "/images/photo_2026-05-14_11-23-32.jpg",
-      "/images/photo_2026-05-14_11-23-37.jpg"
-    ],
-    "serviceAreas": ["Bat Yam", "Tel Aviv-Yafo", "Holon", "Rishon LeZion", "Ramat Gan"],
+    "postalCode": "",
+    "geo": { "lat": 32.0840, "lng": 34.8878 },
+    "googleMapsUrl": "https://www.google.com/maps/search/barbara+shop+petah+tikva",
+    "serviceAreas": ["Petah Tikva", "Tel Aviv", "Ramat Gan", "Bnei Brak"],
     "description": {
-      "ru": "Уютный салон красоты в Бат-Яме. Профессиональные мастера, качественные материалы, атмосфера уюта и заботы.",
-      "he": "סלון יופי נעים בבת ים. מעצבות מקצועיות, חומרים איכותיים, אווירה חמה ומטפחת.",
-      "en": "A cozy beauty salon in Bat Yam. Professional stylists, quality products, a warm and caring atmosphere."
+      "ru": "Не просто парикмахерская — место где ты отдыхаешь, смеёшься и уходишь красивее.",
+      "he": "לא רק מספרה — מקום שבו את נחה, צוחקת ויוצאת יפה יותר.",
+      "en": "Not just a salon — a place where you relax, laugh, and leave more beautiful."
     }
   },
 
@@ -49,7 +38,7 @@
     "phoneDisplay": "",
     "whatsapp": "+972501234567",
     "email": "",
-    "instagram": "",
+    "instagram": "https://www.instagram.com/barbara.shop",
     "instagramHandle": "@barbara.shop",
     "facebook": "",
     "tiktok": ""
@@ -70,223 +59,197 @@
     "currencySymbol": "₪"
   },
 
-  "services": [
+  "hairServices": [
     {
-      "id": "manicure",
-      "category": "nails",
-      "duration": 60,
-      "price": 180,
+      "id": "smoothing",
+      "emoji": "💆‍♀️",
       "name": {
-        "ru": "Маникюр гель-лак",
-        "he": "מניקור ג'ל",
-        "en": "Gel Manicure"
+        "ru": "Выпрямление и уходы",
+        "he": "החלקות וטיפולים",
+        "en": "Smoothing & Treatments"
       },
-      "description": {
-        "ru": "Премиальный маникюр с долговечным гель-покрытием. Идеальная форма, слои защиты, сияние.",
-        "he": "מניקור פרימיום עם ציפוי ג'ל עמיד. צורה מושלמת, שכבות הגנה, זוהר.",
-        "en": "Premium gel manicure with lasting color and shine. Perfect shape, protective layers."
-      }
+      "items": [
+        {
+          "name": { "ru": "Ботокс для волос", "he": "בוטוקס לשיער", "en": "Hair Botox" },
+          "price": "350–550 ₪",
+          "note": {
+            "ru": "Приятнее чем уколы — и волосы скажут спасибо",
+            "he": "מחטים זה לפנים — לשיער יש גרסה כיפית יותר",
+            "en": "More pleasant than injections — your hair will thank you"
+          }
+        },
+        {
+          "name": { "ru": "Кератиновый уход", "he": "טיפול קראטין", "en": "Keratin Treatment" },
+          "price": "600 ₪",
+          "note": {
+            "ru": "Просыпайся как в рекламе, а не как чучело",
+            "he": "כדי שתוכלי לקום בבוקר כמו נסיכה, לא כמו מטאטא",
+            "en": "Wake up like in an ad, not like a scarecrow"
+          }
+        },
+        {
+          "name": { "ru": "Кератиновое выпрямление", "he": "החלקת קראטין", "en": "Keratin Straightening" },
+          "price": "1 000–1 400 ₪",
+          "note": {
+            "ru": "Блонд — стиль, кератин — тихая мечта",
+            "he": "בלונד זה סטייל, קראטין זה שקט — זה חלום",
+            "en": "Blonde is style, keratin is a quiet dream"
+          }
+        },
+        {
+          "name": { "ru": "Органическое выпрямление", "he": "החלקה אורגנית", "en": "Organic Straightening" },
+          "price": "1 000–1 400 ₪",
+          "note": {
+            "ru": "Чистота — это зависимость. Предупреждаем!",
+            "he": "אין בה שום דבר אורגני חוץ מהשם. זהירות — זה ממכר!",
+            "en": "Cleanliness is an addiction. You've been warned!"
+          }
+        }
+      ]
     },
     {
-      "id": "pedicure",
-      "category": "nails",
-      "duration": 75,
-      "price": 220,
+      "id": "restoration",
+      "emoji": "✨",
       "name": {
-        "ru": "Педикюр с гель-лаком",
-        "he": "פדיקור עם ג'ל",
-        "en": "Gel Pedicure"
+        "ru": "Восстановление",
+        "he": "שיקום",
+        "en": "Restoration"
       },
-      "description": {
-        "ru": "Полный уход за стопами с аппаратной обработкой и гель-лаком. Мягкость и ухоженность на недели.",
-        "he": "טיפול מלא בכפות הרגליים עם ג'ל. רכות והזנה למשך שבועות.",
-        "en": "Complete foot care with gel polish. Soft, nourished feet for weeks."
-      }
-    },
-    {
-      "id": "haircut",
-      "category": "hair",
-      "duration": 60,
-      "price": 200,
-      "name": {
-        "ru": "Стрижка и укладка",
-        "he": "תספורת וסטייל",
-        "en": "Haircut & Styling"
-      },
-      "description": {
-        "ru": "Профессиональная стрижка с красивой укладкой. Консультация по форме и текстуре волос.",
-        "he": "תספורת מקצועית עם סטייל יפה. ייעוץ על צורה וטקסטורה.",
-        "en": "Professional cut with gorgeous styling. Expert consultation on shape and texture."
-      }
+      "items": [
+        {
+          "name": { "ru": "Ампульный уход", "he": "טיפול אמפולה", "en": "Ampoule Treatment" },
+          "price": "70 ₪",
+          "note": {
+            "ru": "Уставшие волосы? Ампула — наш эспрессо",
+            "he": "שיער עייף? האמפולה זה האספרסו שלנו",
+            "en": "Tired hair? Ampoule is our espresso"
+          }
+        },
+        {
+          "name": { "ru": "Глубокое восстановление", "he": "טיפול משקם עמוק", "en": "Deep Restoration" },
+          "price": "150 ₪",
+          "note": {
+            "ru": "Краски, выпрямления… пора вернуть волосам любовь",
+            "he": "צבעים, החלקות... הגיע הזמן להחזיר לשיער אהבה",
+            "en": "Dyes, straightening… time to bring love back to your hair"
+          }
+        }
+      ]
     },
     {
       "id": "coloring",
-      "category": "hair",
-      "duration": 120,
-      "price": 380,
+      "emoji": "🎨",
       "name": {
-        "ru": "Окрашивание волос",
-        "he": "צביעת שיער",
-        "en": "Hair Coloring"
+        "ru": "Окрашивание",
+        "he": "צבעים",
+        "en": "Coloring"
       },
-      "description": {
-        "ru": "Премиум окрашивание с подбором идеального цвета. Балаяж, омбре, сплошное или мелирование.",
-        "he": "צביעה פרימיום עם בחירת גוון מושלם. בלאיאז', אומברה, הדגשות.",
-        "en": "Premium coloring with perfect shade selection. Balayage, ombre, highlights."
-      }
-    },
-    {
-      "id": "eyebrows",
-      "category": "face",
-      "duration": 45,
-      "price": 140,
-      "name": {
-        "ru": "Дизайн бровей",
-        "he": "עיצוב גבות",
-        "en": "Eyebrow Design"
-      },
-      "description": {
-        "ru": "Коррекция, окрашивание и укладка. Идеальная форма для вашего типа лица.",
-        "he": "תיקון, צביעה ועיצוב. צורה מושלמת לסוג הפנים שלך.",
-        "en": "Correction, tinting & styling. Perfect shape for your face type."
-      }
-    },
-    {
-      "id": "lashes",
-      "category": "face",
-      "duration": 90,
-      "price": 280,
-      "name": {
-        "ru": "Наращивание ресниц",
-        "he": "הארכת ריסים",
-        "en": "Lash Extensions"
-      },
-      "description": {
-        "ru": "Объёмные или классические ресницы. Натуральный вид, долгий результат, гипоаллергенный материал.",
-        "he": "ריסים קלאסיים או וולום. מראה טבעי, תוצאה ארוכה, חומר בטוח.",
-        "en": "Volume or classic lashes. Natural look, long-lasting, hypoallergenic material."
-      }
-    },
-    {
-      "id": "facial",
-      "category": "face",
-      "duration": 60,
-      "price": 240,
-      "name": {
-        "ru": "Уход за лицом",
-        "he": "טיפול פנים",
-        "en": "Facial Treatment"
-      },
-      "description": {
-        "ru": "Люксовый уход: очистка, пилинг, маска, массаж. Кожа светится здоровьем и молодостью.",
-        "he": "טיפול יוקרתי: ניקוי, קילוח, מסיכה, עיסוי. עור זוהר בבריאות.",
-        "en": "Luxe treatment: cleanse, exfoliate, mask, massage. Skin glows with health."
-      }
-    },
-    {
-      "id": "makeup",
-      "category": "face",
-      "duration": 45,
-      "price": 160,
-      "name": {
-        "ru": "Профессиональный макияж",
-        "he": "איפור מקצועי",
-        "en": "Professional Makeup"
-      },
-      "description": {
-        "ru": "Макияж на любой случай: вечерний, свадебный, повседневный. Стойкие пигменты, безупречный результат.",
-        "he": "איפור לכל אירוע. פיגמנטים עמידים, תוצאה ללא תקלה.",
-        "en": "Makeup for any occasion. Long-lasting pigments, flawless finish."
-      }
+      "items": [
+        {
+          "name": { "ru": "Окрашивание корней", "he": "צבע שורש", "en": "Root Color" },
+          "price": "240 ₪",
+          "note": {
+            "ru": "Сделаем всё, чтобы пигментация осталась нашим секретом",
+            "he": "אנחנו נעשה הכל כדי שהפיגמנטציה תישאר סוד בינינו",
+            "en": "We'll make sure the pigmentation stays our secret"
+          }
+        },
+        {
+          "name": { "ru": "Полное окрашивание", "he": "צבע ראש מלא", "en": "Full Color" },
+          "price": "290 ₪",
+          "note": {
+            "ru": "Даже лучший цвет тускнеет — мы вернём его к жизни",
+            "he": "כי גם הצבע הכי יפה בסוף דוהה — ואנחנו כאן כדי להחזיר לו חיים",
+            "en": "Even the best color fades — we're here to bring it back to life"
+          }
+        }
+      ]
     }
   ],
 
-  "gallery": {
-    "photos": [
-      { "src": "/images/photo_2026-05-14_11-23-24.jpg", "alt": { "ru": "Премиум маникюр", "he": "מניקור פרימיום", "en": "Premium manicure" } },
-      { "src": "/images/photo_2026-05-14_11-23-32.jpg", "alt": { "ru": "Дизайн ногтей", "he": "עיצוב ציפורניים", "en": "Nail design" } },
-      { "src": "/images/photo_2026-05-14_11-23-37.jpg", "alt": { "ru": "Педикюр", "he": "פדיקור", "en": "Pedicure" } },
-      { "src": "/images/logo.jpg", "alt": { "ru": "Barbara Shop логотип", "he": "לוגו Barbara Shop", "en": "Barbara Shop logo" } }
-    ]
-  },
+  "nailsServices": [
+    {
+      "name": { "ru": "Маникюр гель-лак", "he": "מניקור ג'ל", "en": "Gel Manicure" },
+      "price": "180 ₪",
+      "note": { "ru": "Долговечное покрытие, идеальная форма", "he": "ציפוי עמיד, צורה מושלמת", "en": "Long-lasting coating, perfect shape" }
+    },
+    {
+      "name": { "ru": "Педикюр с гель-лаком", "he": "פדיקור ג'ל", "en": "Gel Pedicure" },
+      "price": "220 ₪",
+      "note": { "ru": "Мягкость и ухоженность на недели", "he": "רכות והזנה למשך שבועות", "en": "Soft and cared for weeks" }
+    },
+    {
+      "name": { "ru": "Дизайн ногтей", "he": "עיצוב ציפורניים", "en": "Nail Art" },
+      "price": "от 30 ₪",
+      "note": { "ru": "Рисунки, стразы, градиент", "he": "ציורים, ריינסטון, גרדיאנט", "en": "Art, rhinestones, gradient" }
+    }
+  ],
+
+  "skinServices": [
+    {
+      "name": { "ru": "Уход за лицом", "he": "טיפול פנים", "en": "Facial Treatment" },
+      "price": "240 ₪",
+      "note": { "ru": "Очистка, пилинг, маска, массаж", "he": "ניקוי, קילוח, מסיכה, עיסוי", "en": "Cleanse, exfoliate, mask, massage" }
+    },
+    {
+      "name": { "ru": "Дизайн бровей", "he": "עיצוב גבות", "en": "Eyebrow Design" },
+      "price": "140 ₪",
+      "note": { "ru": "Коррекция, окрашивание, укладка", "he": "תיקון, צביעה, עיצוב", "en": "Correction, tinting, styling" }
+    },
+    {
+      "name": { "ru": "Наращивание ресниц", "he": "הארכת ריסים", "en": "Lash Extensions" },
+      "price": "280 ₪",
+      "note": { "ru": "Классика или объём, долгий результат", "he": "קלאסי או וולום, תוצאה ארוכה", "en": "Classic or volume, long-lasting" }
+    }
+  ],
 
   "masters": [
     {
       "id": "master-1",
-      "name": {
-        "ru": "Барбара",
-        "he": "ברברה",
-        "en": "Barbara"
-      },
-      "role": {
-        "ru": "Главный мастер",
-        "he": "מעצבת ראשית",
-        "en": "Lead Artist"
-      },
+      "emoji": "💇‍♀️",
+      "name": { "ru": "Барбара", "he": "ברברה", "en": "Barbara" },
+      "role": { "ru": "Главный мастер-парикмахер", "he": "מעצבת שיער ראשית", "en": "Lead Hair Stylist" },
       "experienceYears": 12,
-      "photo": "/images/logo.jpg",
       "specialties": {
-        "ru": ["Маникюр", "Педикюр", "Дизайн ногтей", "Консультации"],
-        "he": ["מניקור", "פדיקור", "עיצוב ציפורניים", "ייעוץ"],
-        "en": ["Manicure", "Pedicure", "Nail design", "Consultation"]
+        "ru": ["Выпрямление", "Кератин", "Окрашивание", "Стрижка"],
+        "he": ["החלקות", "קראטין", "צביעה", "תספורת"],
+        "en": ["Smoothing", "Keratin", "Coloring", "Cutting"]
       }
     },
     {
       "id": "master-2",
-      "name": {
-        "ru": "София",
-        "he": "סופיה",
-        "en": "Sophia"
-      },
-      "role": {
-        "ru": "Стилист по волосам",
-        "he": "עיצובית שיער",
-        "en": "Hair Stylist"
-      },
+      "emoji": "💅",
+      "name": { "ru": "София", "he": "סופיה", "en": "Sophia" },
+      "role": { "ru": "Мастер маникюра и педикюра", "he": "מומחית מניקור ופדיקור", "en": "Nail Specialist" },
       "experienceYears": 8,
-      "photo": "/images/logo.jpg",
       "specialties": {
-        "ru": ["Стрижка", "Окрашивание", "Укладка", "Балаяж"],
-        "he": ["תספורת", "צביעה", "סטייל", "בלאיאז'"],
-        "en": ["Cutting", "Coloring", "Styling", "Balayage"]
+        "ru": ["Гель-лак", "Педикюр", "Дизайн ногтей"],
+        "he": ["ג'ל", "פדיקור", "עיצוב ציפורניים"],
+        "en": ["Gel Polish", "Pedicure", "Nail Art"]
       }
     },
     {
       "id": "master-3",
-      "name": {
-        "ru": "Анна",
-        "he": "אנה",
-        "en": "Anna"
-      },
-      "role": {
-        "ru": "Мастер по макияжу и ресницам",
-        "he": "מומחית איפור וריסים",
-        "en": "Makeup & Lash Artist"
-      },
+      "emoji": "🧖‍♀️",
+      "name": { "ru": "Анна", "he": "אנה", "en": "Anna" },
+      "role": { "ru": "Косметолог", "he": "קוסמטיקאית", "en": "Cosmetologist" },
       "experienceYears": 6,
-      "photo": "/images/logo.jpg",
       "specialties": {
-        "ru": ["Макияж", "Ресницы", "Брови", "Уход за лицом"],
-        "he": ["איפור", "ריסים", "גבות", "טיפול פנים"],
-        "en": ["Makeup", "Lashes", "Brows", "Facials"]
+        "ru": ["Уход за лицом", "Брови", "Ресницы"],
+        "he": ["טיפול פנים", "גבות", "ריסים"],
+        "en": ["Facials", "Brows", "Lashes"]
       }
     }
   ],
 
   "googleReviews": {
-    "url": "https://www.google.com/search?q=barbara+shop+bat+yam",
+    "url": "https://www.google.com/search?q=barbara+shop+petah+tikva",
     "rating": 4.9,
     "count": 47
   },
 
-  "homeVisits": {
-    "ru": "",
-    "he": "",
-    "en": ""
-  },
-
   "seo": {
-    "siteUrl": "",
+    "siteUrl": "https://barbara-shop-production.up.railway.app",
     "ga4Id": "",
     "metaPixelId": "",
     "ogImage": "/images/logo.jpg"

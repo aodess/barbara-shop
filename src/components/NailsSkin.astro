@@ -1,0 +1,151 @@
+---
+import content from '../data/content.json';
+import { pick } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const nails = content.nailsServices;
+const skin  = content.skinServices;
+---
+
+<!-- МАНИКЮР -->
+<section class="nails-section" id="nails">
+  <div class="container">
+    <div class="ns-inner">
+
+      <div class="ns-text">
+        <div class="section-head">
+          <span class="eyebrow">
+            {pick({ ru: 'Ногти', he: 'ציפורניים', en: 'Nails' }, lang)}
+          </span>
+          <h2>
+            {pick({ ru: 'Маникюр', he: 'מניקור', en: 'Manicure' }, lang)}
+          </h2>
+          <p class="section-intro">
+            {pick({
+              ru: '💅 Идеальные ногти — ещё одна причина прийти к нам',
+              he: '💅 ציפורניים מושלמות — עוד סיבה לבוא אלינו',
+              en: '💅 Perfect nails — one more reason to visit us'
+            }, lang)}
+          </p>
+        </div>
+
+        <ul class="ns-list">
+          {nails.map((item) => (
+            <li class="ns-item">
+              <div class="ns-item-top">
+                <span class="ns-item-name">{pick(item.name, lang)}</span>
+                <span class="ns-item-price">{item.price}</span>
+              </div>
+              <p class="ns-item-note">{pick(item.note, lang)}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="ns-photos">
+        <div class="photo-placeholder">
+          <span class="photo-placeholder-icon">📸</span>
+          <span>{pick({ ru: 'Фото маникюра', he: 'תמונות מניקור', en: 'Manicure photos' }, lang)}</span>
+        </div>
+        <div class="photo-placeholder">
+          <span class="photo-placeholder-icon">📸</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- КОСМЕТОЛОГИЯ -->
+<section class="skin-section" id="skin">
+  <div class="container">
+    <div class="ns-inner ns-inner--reversed">
+
+      <div class="ns-text">
+        <div class="section-head">
+          <span class="eyebrow">
+            {pick({ ru: 'Косметолог', he: 'קוסמטיקה', en: 'Skin Care' }, lang)}
+          </span>
+          <h2>
+            {pick({ ru: 'Косметология', he: 'טיפולי פנים', en: 'Aesthetics' }, lang)}
+          </h2>
+          <p class="section-intro">
+            {pick({
+              ru: '🧖‍♀️ Брови, ресницы, уход за лицом — всё в одном месте',
+              he: '🧖‍♀️ גבות, ריסים, טיפולי פנים — הכל במקום אחד',
+              en: '🧖‍♀️ Brows, lashes, facials — all in one place'
+            }, lang)}
+          </p>
+        </div>
+
+        <ul class="ns-list">
+          {skin.map((item) => (
+            <li class="ns-item">
+              <div class="ns-item-top">
+                <span class="ns-item-name">{pick(item.name, lang)}</span>
+                <span class="ns-item-price">{item.price}</span>
+              </div>
+              <p class="ns-item-note">{pick(item.note, lang)}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="ns-photos">
+        <div class="photo-placeholder">
+          <span class="photo-placeholder-icon">📸</span>
+          <span>{pick({ ru: 'Фото работ', he: 'תמונות עבודה', en: 'Work photos' }, lang)}</span>
+        </div>
+        <div class="photo-placeholder">
+          <span class="photo-placeholder-icon">📸</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .nails-section { background: var(--surface); }
+  .skin-section  { background: var(--paper); }
+
+  .ns-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 5vw, 56px);
+    align-items: start;
+  }
+  .ns-inner--reversed { direction: rtl; }
+  .ns-inner--reversed > * { direction: ltr; }
+  [dir="rtl"] .ns-inner { direction: ltr; }
+  [dir="rtl"] .ns-inner--reversed { direction: rtl; }
+
+  .ns-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .ns-item {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,133,194,0.08);
+  }
+  .ns-item:last-child { border-bottom: none; }
+  .ns-item-top {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    margin-bottom: 4px;
+  }
+  .ns-item-name {
+    font-family: var(--font-display); font-weight: 500; font-size: 0.98rem;
+  }
+  .ns-item-price {
+    font-family: var(--font-display); font-weight: 600;
+    color: var(--gold); font-size: 0.98rem; white-space: nowrap; flex-shrink: 0;
+  }
+  .ns-item-note { color: var(--ink-mute); font-size: 0.80rem; margin: 0; font-style: italic; }
+
+  .ns-photos { display: flex; flex-direction: column; gap: 12px; }
+  .ns-photos .photo-placeholder { aspect-ratio: 3/4; }
+  .ns-photos .photo-placeholder:last-child { aspect-ratio: 3/2; }
+
+  @media (max-width: 680px) {
+    .ns-inner { grid-template-columns: 1fr; }
+    .ns-inner--reversed { direction: ltr; }
+    .ns-photos { flex-direction: row; }
+    .ns-photos .photo-placeholder { aspect-ratio: 1; }
+  }
+</style>
