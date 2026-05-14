@@ -50,7 +50,6 @@ async function convert() {
       const info = await sharp(input)
         .resize({ width: maxW, withoutEnlargement: true })
         .webp({ quality: QUALITY, effort: 5 })
-        .withMetadata({ exif: {}, icc: {} }) // убрать метаданные
         .toFile(output);
 
       console.log(`✓ ${file} → ${name}.webp (${Math.round(info.size / 1024)} КБ)`);

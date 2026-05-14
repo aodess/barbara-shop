@@ -9,8 +9,9 @@
     "webp": "node scripts/to-webp.js"
   },
   "dependencies": {
+    "@splidejs/splide": "^4.1.4",
     "astro": "^4.16.0",
-    "@splidejs/splide": "^4.1.4"
+    "gsap": "^3.15.0"
   },
   "devDependencies": {
     "sharp": "^0.33.5"

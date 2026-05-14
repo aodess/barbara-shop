@@ -46,7 +46,6 @@
 
 [lang="he"] {
   --font-body:    'Assistant', 'Raleway', system-ui, sans-serif;
-  --font-script:  'Frank Ruhl Libre', 'David Libre', Georgia, serif;
   --font-display: 'Frank Ruhl Libre', 'David Libre', Georgia, serif;
 }
 
@@ -309,11 +308,40 @@ section {
 .site-header {
   position: sticky; top: 0; z-index: 90;
   border-bottom: 1px solid rgba(255,133,194,0.08);
-  background: rgba(8,8,16,0.90);
+  background: rgba(8,8,16,0.82);
   backdrop-filter: saturate(140%) blur(20px);
   -webkit-backdrop-filter: saturate(140%) blur(20px);
   transition: box-shadow 0.3s, border-color 0.3s;
+  overflow: hidden;
 }
+
+/* Фоновое фото шапки — за стеклом */
+.header-shapka-bg {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.header-shapka-bg img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.18;
+  filter: saturate(0.6) brightness(0.8);
+  display: block;
+}
+.header-shapka-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(8,8,16,0.20) 0%,
+    rgba(8,8,16,0.10) 60%,
+    rgba(8,8,16,0.60) 100%
+  );
+}
+
+/* Всё содержимое шапки поверх фото */
+.header-top,
+.header-langs { position: relative; z-index: 2; }
 .site-header.scrolled {
   border-bottom-color: rgba(255,133,194,0.18);
   box-shadow: 0 4px 28px rgba(0,0,0,0.55), 0 0 40px rgba(255,133,194,0.04);
@@ -343,7 +371,9 @@ section {
   background: linear-gradient(135deg, var(--rose-bright) 0%, #FFD6F0 40%, var(--gold) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  line-height: 1; letter-spacing: 0.01em;
+  line-height: 1.3; letter-spacing: 0.01em;
+  padding-block: 6px;
+  overflow: visible;
 }
 
 /* Header actions */
@@ -690,6 +720,12 @@ section + section::before {
 }
 
 /* ===================== RESPONSIVE ===================== */
+
+/* RTL carousel arrows — scoped CSS doesn't reach parent dir="rtl" in Astro, so put it here */
+[dir="rtl"] .hair-arrow svg,
+[dir="rtl"] .m-arrow svg {
+  transform: scaleX(-1) !important;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

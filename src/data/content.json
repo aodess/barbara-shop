@@ -209,7 +209,7 @@
       "emoji": "💇‍♀️",
       "name": { "ru": "Барбара", "he": "ברברה", "en": "Barbara" },
       "role": { "ru": "Главный мастер-парикмахер", "he": "מעצבת שיער ראשית", "en": "Lead Hair Stylist" },
-      "experienceYears": 12,
+      "experienceYears": 20,
       "specialties": {
         "ru": ["Выпрямление", "Кератин", "Окрашивание", "Стрижка"],
         "he": ["החלקות", "קראטין", "צביעה", "תספורת"],
@@ -243,9 +243,21 @@
   ],
 
   "googleReviews": {
-    "url": "https://www.google.com/search?q=barbara+shop+petah+tikva",
+    "url": "https://share.google/LKsM1hqDPydqI8vmr",
     "rating": 4.9,
     "count": 47
+  },
+
+  "gallery": {
+    "photos": [
+      { "src": "/images/1.webp", "alt": { "ru": "Работа мастера", "he": "עבודת המעצבת", "en": "Stylist work" } },
+      { "src": "/images/2.webp", "alt": { "ru": "Стрижка и укладка", "he": "תספורת ועיצוב", "en": "Cut & style" } },
+      { "src": "/images/3.webp", "alt": { "ru": "Окрашивание", "he": "צביעת שיער", "en": "Hair coloring" } },
+      { "src": "/images/4.webp", "alt": { "ru": "Кератиновое выпрямление", "he": "החלקת קראטין", "en": "Keratin treatment" } },
+      { "src": "/images/5.webp", "alt": { "ru": "Результат процедуры", "he": "תוצאת הטיפול", "en": "Treatment result" } },
+      { "src": "/images/6.webp", "alt": { "ru": "Уход за волосами", "he": "טיפול בשיער", "en": "Hair care" } },
+      { "src": "/images/7.webp", "alt": { "ru": "Финальный образ", "he": "מראה סופי", "en": "Final look" } }
+    ]
   },
 
   "seo": {

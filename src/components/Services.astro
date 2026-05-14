@@ -24,8 +24,8 @@ const categories = content.hairServices;
       </p>
     </div>
 
-    <!-- Карусель — орнаментальная рамка -->
-    <div class="hair-carousel-outer card-ornament">
+    <!-- Карусель -->
+    <div class="hair-carousel-outer">
       <!-- Счётчик слайдов -->
       <div class="hair-counter" aria-live="polite">
         <span class="hair-counter-cur" id="hair-cur">01</span>
@@ -109,15 +109,15 @@ const categories = content.hairServices;
       </div>
     </div>
 
-    <!-- Фото галерея (место под фото) -->
+    <!-- Фото галерея -->
     <div class="hair-photos">
       <p class="hair-photos-label">
         {pick({ ru: '— фотографии работ —', he: '— תמונות עבודה —', en: '— portfolio —' }, lang)}
       </p>
       <div class="hair-photos-grid">
-        <div class="photo-placeholder"><span class="photo-placeholder-icon">📸</span></div>
-        <div class="photo-placeholder"><span class="photo-placeholder-icon">📸</span></div>
-        <div class="photo-placeholder"><span class="photo-placeholder-icon">📸</span></div>
+        <a class="hair-photo-item" href="#gallery"><img src="/images/5.webp" alt="" loading="lazy" /></a>
+        <a class="hair-photo-item" href="#gallery"><img src="/images/6.webp" alt="" loading="lazy" /></a>
+        <a class="hair-photo-item" href="#gallery"><img src="/images/7.webp" alt="" loading="lazy" /></a>
       </div>
     </div>
 
@@ -309,6 +309,14 @@ const categories = content.hairServices;
   .hair-photos-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
   }
+  .hair-photo-item {
+    display: block; border-radius: var(--r-md); overflow: hidden;
+    aspect-ratio: 3/4; border: 1px solid rgba(255,133,194,0.15);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hair-photo-item:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 16px 40px rgba(255,133,194,0.15); }
+  .hair-photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
   /* RTL fix — зеркалим стрелки чтобы они смотрели наружу */
   [dir="rtl"] .hair-arrow svg { transform: scaleX(-1); }
 
