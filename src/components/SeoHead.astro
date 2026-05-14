@@ -30,5 +30,11 @@ const pageUrl = siteUrl ? `${siteUrl}/${lang}/` : `/${lang}/`;
     <link rel="alternate" hreflang={l} href={`${siteUrl}/${l}/`} />
   ))}
   <link rel="alternate" hreflang="x-default" href={`${siteUrl}/${FALLBACK_LOCALE}/`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css" />
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
+
   <script type="application/ld+json" set:html={buildJsonLd(lang)}></script>
 </head>

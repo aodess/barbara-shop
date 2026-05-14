@@ -3,47 +3,191 @@ import content from '../data/content.json';
 import { t, pick } from '../lib/i18n.js';
 const { lang } = Astro.props;
 const tr = t(lang);
-const groups = Array.from(content.services.reduce((map, service) => {
-  const category = service.category || 'other';
-  if (!map.has(category)) {
-    map.set(category, []);
-  }
-  map.get(category).push(service);
-  return map;
-}, new Map()));
-const categoryNames = {
-  hair: { ru: 'Волосы', he: 'שיער', en: 'Hair' },
-  nails: { ru: 'Ногти', he: 'ציפורניים', en: 'Nails' },
-  face: { ru: 'Лицо', he: 'פנים', en: 'Face' },
-  other: { ru: 'Другие', he: 'אחרים', en: 'Other' },
+
+const categoryMeta = {
+  hair:  { ru: 'Волосы',   he: 'שיער',       en: 'Hair',  icon: '✂' },
+  nails: { ru: 'Ногти',    he: 'ציפורניים',  en: 'Nails', icon: '◆' },
+  face:  { ru: 'Лицо',     he: 'פנים',        en: 'Face',  icon: '✦' },
+  other: { ru: 'Другое',   he: 'אחרים',       en: 'Other', icon: '◇' },
 };
+
+const grouped = content.services.reduce((acc, s) => {
+  const cat = s.category || 'other';
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(s);
+  return acc;
+}, {});
 ---
+
 <section class="services" id="services">
-  <div class="container section-split">
-    <div class="services-copy">
+  <div class="services-bg-glow"></div>
+  <div class="container">
+    <div class="services-header">
       <span class="eyebrow">{tr.services.title}</span>
-      <h2>{pick({ ru: 'Меню ухода и стилистики', he: 'תפריט טיפוח וסטייל', en: 'Care & Style Menu' }, lang)}</h2>
-      <p class="section-intro">{pick({ ru: 'Нежно, роскошно и эффектно — в каждом образе.', he: 'עדין, יוקרתי ובולט — בכל מראה.', en: 'Soft, luxurious and expressive in every look.' }, lang)}</p>
-      <div class="service-pill-grid">
-        {groups.map(([category, items]) => (
-          <div class="service-group-card">
-            <p class="service-group-label">{pick(categoryNames[category], lang)}</p>
-            <p class="service-group-meta">{items.length} {pick({ ru: 'процедуры', he: 'טיפולים', en: 'services' }, lang)}</p>
-          </div>
-        ))}
-      </div>
+      <h2>{pick({ ru: 'Профессиональный уход', he: 'טיפוח מקצועי', en: 'Professional Care' }, lang)}</h2>
+      <p class="section-intro">{pick({ ru: 'Каждая процедура — это ритуал заботы и совершенства. Цены включают все материалы.', he: 'כל טיפול הוא טקס טיפוח ושלמות. המחירים כוללים את כל החומרים.', en: 'Every treatment is a ritual of care and perfection. Prices include all materials.' }, lang)}</p>
     </div>
-    <div class="services-list">
-      {content.services.map(service => (
-        <article class="card service-card">
-          <div class="service-title">
-            <h3>{service.name[lang] || service.name.ru}</h3>
-            <span class="service-price">{service.price} {content.pricing.currencySymbol}</span>
-          </div>
-          <p class="service-meta">{service.duration} {tr.services.duration}</p>
-          <p class="service-desc">{service.description[lang] || service.description.ru}</p>
-        </article>
+
+    <!-- category overview pills -->
+    <div class="services-cats">
+      {Object.entries(categoryMeta).filter(([k]) => grouped[k]).map(([k, meta]) => (
+        <a class="cat-pill" href={`#cat-${k}`}>
+          <span class="cat-icon">{meta.icon}</span>
+          <span>{pick(meta, lang)}</span>
+          <span class="cat-count">{grouped[k]?.length || 0}</span>
+        </a>
       ))}
     </div>
+
+    <!-- services by category -->
+    {Object.entries(grouped).map(([cat, services]) => (
+      <div class="services-group" id={`cat-${cat}`}>
+        <div class="services-group-header">
+          <span class="group-icon">{categoryMeta[cat]?.icon || '◆'}</span>
+          <h3 class="group-title">{pick(categoryMeta[cat] || { ru: cat, he: cat, en: cat }, lang)}</h3>
+          <div class="group-line"></div>
+        </div>
+        <div class="services-cards">
+          {services.map(service => (
+            <article class="svc-card">
+              <div class="svc-card-top">
+                <h4 class="svc-name">{service.name[lang] || service.name.ru}</h4>
+                <div class="svc-price-block">
+                  <span class="svc-price">{service.price}</span>
+                  <span class="svc-currency">{content.pricing.currencySymbol}</span>
+                </div>
+              </div>
+              <p class="svc-desc">{service.description[lang] || service.description.ru}</p>
+              <div class="svc-footer">
+                <span class="svc-duration">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  {service.duration} {tr.services.duration}
+                </span>
+                <button class="svc-book-btn" type="button" data-booking-open>
+                  {pick({ ru: 'Записаться', he: 'קביעת תור', en: 'Book' }, lang)}
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
   </div>
 </section>
+
+<style>
+  .services { position: relative; overflow: hidden; }
+  .services-bg-glow {
+    position: absolute; top: -100px; right: -200px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(221,184,122,0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .services-header { max-width: 680px; margin-bottom: 40px; }
+  .services-header h2 { margin: 16px 0 16px; }
+
+  .services-cats {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 52px;
+  }
+  .cat-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: 999px;
+    background: linear-gradient(135deg, rgba(221,184,122,0.08), rgba(224,144,180,0.05));
+    border: 1px solid rgba(221,184,122,0.20);
+    color: var(--ink-soft); font-size: 0.9rem; font-weight: 500;
+    transition: all 0.25s ease; text-decoration: none;
+  }
+  .cat-pill:hover {
+    background: linear-gradient(135deg, rgba(221,184,122,0.18), rgba(224,144,180,0.12));
+    border-color: var(--gold); color: var(--ink);
+    box-shadow: 0 4px 20px rgba(221,184,122,0.15);
+    transform: translateY(-2px);
+  }
+  .cat-icon { color: var(--gold); font-size: 1.1em; }
+  .cat-count {
+    background: rgba(221,184,122,0.15); color: var(--gold);
+    border-radius: 999px; padding: 1px 10px; font-size: 0.78rem; font-weight: 700;
+  }
+
+  .services-group { margin-bottom: 52px; }
+  .services-group:last-child { margin-bottom: 0; }
+  .services-group-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+  }
+  .group-icon {
+    font-size: 1.4rem; color: var(--gold);
+    text-shadow: 0 0 16px rgba(221,184,122,0.60);
+  }
+  .group-title {
+    font-size: 1.4rem; margin: 0; color: var(--ink);
+  }
+  .group-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, var(--line-strong), transparent);
+  }
+
+  .services-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .svc-card {
+    background: linear-gradient(155deg, var(--surface) 0%, var(--surface-raised) 100%);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 28px 26px;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    position: relative; overflow: hidden;
+  }
+  .svc-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(221,184,122,0.40), transparent);
+  }
+  .svc-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(221,184,122,0.40);
+    box-shadow: 0 20px 48px rgba(221,184,122,0.15), 0 0 60px rgba(221,184,122,0.08);
+  }
+  .svc-card-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 14px;
+  }
+  .svc-name { font-size: 1.15rem; font-weight: 600; margin: 0; line-height: 1.3; }
+  .svc-price-block { display: flex; align-items: baseline; gap: 3px; flex-shrink: 0; }
+  .svc-price {
+    font-family: var(--font-display); font-size: 1.6rem; font-weight: 500;
+    background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+  .svc-currency { color: var(--gold); font-size: 1rem; font-weight: 600; }
+  .svc-desc { color: var(--ink-soft); font-size: 0.92rem; line-height: 1.6; flex: 1; margin: 0 0 18px; }
+  .svc-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; margin-top: auto;
+  }
+  .svc-duration {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--ink-mute); font-size: 0.84rem;
+  }
+  .svc-book-btn {
+    background: linear-gradient(135deg, rgba(221,184,122,0.15), rgba(224,144,180,0.10));
+    border: 1px solid rgba(221,184,122,0.30); border-radius: 999px;
+    color: var(--gold); font-size: 0.82rem; font-weight: 600;
+    padding: 8px 18px; cursor: pointer; letter-spacing: 0.03em;
+    transition: all 0.25s ease;
+    font-family: var(--font-body);
+  }
+  .svc-book-btn:hover {
+    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+    border-color: var(--gold); color: var(--paper);
+    box-shadow: 0 4px 20px rgba(221,184,122,0.30);
+    transform: translateY(-1px);
+  }
+</style>

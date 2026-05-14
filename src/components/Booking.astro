@@ -1,67 +1,161 @@
 ---
 import content from '../data/content.json';
 import { t, pick } from '../lib/i18n.js';
-import { whatsappLink } from '../lib/seo.js';
 const { lang } = Astro.props;
 const tr = t(lang);
 const whatsapp = content.contacts.whatsapp || '+972501234567';
-const today = new Date().toISOString().split('T')[0];
-const times = ['10:00', '11:30', '13:00', '15:00', '17:00', '19:00'];
 const messageSkeleton = tr.booking.message;
 ---
-<section class="booking" id="booking">
-  <div class="booking-shell container">
-    <button class="booking-close" data-booking-close type="button">✕</button>
+
+<div
+  id="booking-meta"
+  data-whatsapp={whatsapp}
+  data-message={messageSkeleton}
+  style="display:none"
+></div>
+
+<section class="booking" id="booking" aria-modal="true" aria-label={tr.booking.title}>
+  <div class="booking-backdrop" data-booking-close></div>
+  <div class="booking-shell">
     <div class="booking-body">
-      <span class="eyebrow">{tr.booking.title}</span>
-      <h2>{pick({ ru: 'Забронируйте время', he: 'הזמינו תור', en: 'Book your visit' }, lang)}</h2>
+      <div class="booking-head">
+        <span class="eyebrow">{pick({ ru: 'Запись онлайн', he: 'קביעת תור', en: 'Online Booking' }, lang)}</span>
+        <button class="booking-close-btn" data-booking-close type="button" aria-label={tr.booking.close}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <h2 class="booking-title">{pick({ ru: 'Забронируйте время', he: 'הזמינו תור', en: 'Book your visit' }, lang)}</h2>
+      <p class="booking-sub">{pick({ ru: 'Выберите дату и время — мы подтвердим через WhatsApp.', he: 'בחרו תאריך ושעה — נאשר דרך וואטסאפ.', en: 'Pick date and time — we\'ll confirm via WhatsApp.' }, lang)}</p>
       <form class="booking-form" id="booking-form">
-        <label>
-          {tr.booking.stepDay}
-          <input type="date" name="date" value={today} min={today} />
+        <label class="booking-label">
+          <span class="label-text">{tr.booking.stepDay}</span>
+          <input class="booking-input" type="date" name="date" id="booking-date" />
         </label>
-        <label>
-          {pick({ ru: 'Время', he: 'שעה', en: 'Time' }, lang)}
-          <select name="time">
-            {times.map(time => <option value={time}>{time}</option>)}
+        <label class="booking-label">
+          <span class="label-text">{pick({ ru: 'Время', he: 'שעה', en: 'Time' }, lang)}</span>
+          <select class="booking-select" name="time" id="booking-time">
+            {['10:00','11:30','13:00','14:30','16:00','17:30','19:00'].map(t => (
+              <option value={t}>{t}</option>
+            ))}
           </select>
         </label>
-        <button class="btn btn-primary" type="submit">{tr.cta.book}</button>
+        <button class="btn btn-primary booking-submit" type="submit">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          {tr.cta.whatsapp}
+        </button>
       </form>
     </div>
   </div>
-  <script type="module">
-    const dialog = document.querySelector('.booking');
-    const openButtons = document.querySelectorAll('[data-booking-open]');
-    const closeButtons = document.querySelectorAll('[data-booking-close]');
-    const form = document.getElementById('booking-form');
-    const whatsapp = '{whatsapp}';
-    const messageTemplate = `{messageSkeleton}`;
+</section>
+
+<script is:inline>
+  (function() {
+    var meta = document.getElementById('booking-meta');
+    var waNumber = meta ? meta.dataset.whatsapp : '+972501234567';
+    var msgTpl = meta ? meta.dataset.message : 'Hello!';
+
+    var dialog = document.getElementById('booking');
+    var form = document.getElementById('booking-form');
+    var dateInput = document.getElementById('booking-date');
+
+    if (dateInput) {
+      var today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+      dateInput.min = today;
+    }
 
     function openDialog() {
+      if (!dialog) return;
       dialog.classList.add('booking-open');
       document.body.style.overflow = 'hidden';
     }
     function closeDialog() {
+      if (!dialog) return;
       dialog.classList.remove('booking-open');
       document.body.style.overflow = '';
     }
-    openButtons.forEach(btn => btn.addEventListener('click', openDialog));
-    closeButtons.forEach(btn => btn.addEventListener('click', closeDialog));
-    dialog.addEventListener('click', (event) => {
-      if (event.target === dialog) closeDialog();
+
+    document.querySelectorAll('[data-booking-open]').forEach(function(el) {
+      el.addEventListener('click', openDialog);
     });
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const formData = new FormData(form);
-      const date = formData.get('date');
-      const time = formData.get('time');
-      const message = messageTemplate
-        .replace('{day}', date)
-        .replace('{date}', date)
-        .replace('{time}', time);
-      const link = `https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-      window.open(link, '_blank');
+    document.querySelectorAll('[data-booking-close]').forEach(function(el) {
+      el.addEventListener('click', closeDialog);
     });
-  </script>
-</section>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDialog();
+    });
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var date = document.getElementById('booking-date').value;
+        var time = document.getElementById('booking-time').value;
+        var message = msgTpl
+          .replace('{day}', date)
+          .replace('{date}', date)
+          .replace('{time}', time);
+        var clean = waNumber.replace(/\D/g, '');
+        window.open('https://wa.me/' + clean + '?text=' + encodeURIComponent(message), '_blank');
+      });
+    }
+  })();
+</script>
+
+<style>
+  .booking {
+    position: fixed; inset: 0; z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .booking.booking-open { display: flex; }
+  .booking-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(4,4,8,0.80);
+    backdrop-filter: blur(14px);
+    animation: bkFadeIn 0.25s ease;
+  }
+  @keyframes bkFadeIn { from { opacity:0; } to { opacity:1; } }
+  .booking-shell {
+    position: relative; z-index: 1;
+    width: min(500px, 100%);
+    background: linear-gradient(145deg, var(--surface) 0%, var(--surface-raised) 100%);
+    border: 1px solid rgba(221,184,122,0.22);
+    border-radius: 32px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 60px rgba(221,184,122,0.08);
+    animation: bkSlideIn 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  @keyframes bkSlideIn { from { transform: scale(0.93) translateY(20px); opacity:0; } to { transform: none; opacity:1; } }
+  .booking-body { padding: 36px 32px 32px; }
+  .booking-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .booking-close-btn {
+    width: 36px; height: 36px; border-radius: 12px;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+    color: var(--ink-soft); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .booking-close-btn:hover { background: rgba(255,255,255,0.12); color: var(--ink); }
+  .booking-title { font-size: 1.9rem; margin: 8px 0 8px; }
+  .booking-sub { color: var(--ink-soft); font-size: 0.95rem; margin-bottom: 24px; }
+  .booking-form { display: grid; gap: 16px; }
+  .booking-label { display: grid; gap: 8px; }
+  .label-text { color: var(--gold); font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .booking-input, .booking-select {
+    width: 100%; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.05);
+    padding: 14px 18px; color: var(--ink);
+    font: inherit; font-size: 1rem;
+    appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .booking-input:focus, .booking-select:focus {
+    outline: none;
+    border-color: rgba(221,184,122,0.45);
+    box-shadow: 0 0 0 3px rgba(221,184,122,0.12);
+  }
+  .booking-submit { width: 100%; padding: 18px; margin-top: 4px; font-size: 1.02rem; }
+</style>
