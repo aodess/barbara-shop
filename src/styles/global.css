@@ -45,7 +45,9 @@
 }
 
 [lang="he"] {
-  --font-body: 'Assistant', 'Raleway', system-ui, sans-serif;
+  --font-body:    'Assistant', 'Raleway', system-ui, sans-serif;
+  --font-script:  'Frank Ruhl Libre', 'David Libre', Georgia, serif;
+  --font-display: 'Frank Ruhl Libre', 'David Libre', Georgia, serif;
 }
 
 /* ===================== RESET ===================== */
@@ -98,6 +100,11 @@ h1 {
 h2 {
   font-family: var(--font-script);
   font-size: clamp(1.9rem, 5vw, 3.4rem); font-weight: 600;
+  animation: h2Glow 4s ease-in-out infinite;
+}
+@keyframes h2Glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(255,20,147,0.20); }
+  50%       { text-shadow: 0 0 40px rgba(255,20,147,0.45), 0 0 80px rgba(255,20,147,0.18); }
 }
 h3 {
   font-family: var(--font-script);
@@ -350,16 +357,21 @@ section {
 }
 .header-insta {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(255,133,194,0.08); border: 1px solid var(--line-strong);
-  color: var(--rose-bright);
-  transition: background 0.2s, box-shadow 0.2s;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 20%, #dc2743 40%, #cc2366 70%, #bc1888 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(220,39,67,0.40), 0 0 40px rgba(220,39,67,0.18);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .header-insta:hover {
-  background: rgba(255,133,194,0.16);
-  box-shadow: 0 0 16px rgba(255,133,194,0.20);
+  transform: scale(1.12);
+  box-shadow: 0 0 32px rgba(220,39,67,0.60), 0 0 60px rgba(220,39,67,0.30);
 }
-.header-insta svg { width: 18px; height: 18px; }
+.header-insta svg {
+  width: 19px; height: 19px;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.60));
+}
 
 /* Hamburger */
 .hamburger {
@@ -544,25 +556,28 @@ section {
 /* ===================== GRAFFITI LAYER ===================== */
 
 .graffiti-bg {
-  position: fixed; inset: 0; z-index: 1;
+  position: fixed; inset: 0; z-index: 10;
   pointer-events: none; overflow: hidden;
 }
 .grf {
   position: absolute;
-  color: var(--rose-bright);
+  /* BARBIE HOT PINK */
+  color: #FF1493;
   pointer-events: none; line-height: 1; user-select: none;
+  font-family: Georgia, serif;
   text-shadow:
-    0 0 18px rgba(255,133,194,0.90),
-    0 0 36px rgba(255,133,194,0.55),
-    0 0 60px rgba(255,133,194,0.30);
+    0 0 12px rgba(255,20,147,1.0),
+    0 0 28px rgba(255,20,147,0.85),
+    0 0 55px rgba(255,20,147,0.55),
+    0 0 90px rgba(255,20,147,0.30);
   animation: grfFloat 8s ease-in-out infinite;
 }
 @keyframes grfFloat {
-  0%   { transform: translateY(0)    rotate(-6deg)  scale(1.00); }
-  25%  { transform: translateY(-14px) rotate(4deg)  scale(1.06); }
-  50%  { transform: translateY(-6px)  rotate(-2deg) scale(1.02); }
-  75%  { transform: translateY(-18px) rotate(7deg)  scale(1.04); }
-  100% { transform: translateY(0)    rotate(-6deg)  scale(1.00); }
+  0%   { transform: translateY(0)     rotate(-8deg)  scale(1.00); }
+  25%  { transform: translateY(-18px)  rotate(5deg)  scale(1.08); }
+  50%  { transform: translateY(-8px)   rotate(-3deg) scale(1.03); }
+  75%  { transform: translateY(-22px)  rotate(9deg)  scale(1.06); }
+  100% { transform: translateY(0)     rotate(-8deg)  scale(1.00); }
 }
 
 /* ===================== RESPONSIVE ===================== */

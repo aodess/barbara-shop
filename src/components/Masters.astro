@@ -172,17 +172,20 @@ const masters = content.masters;
 
   /* SVG иконка мастера */
   .master-icon {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,133,194,0.20) 0%, rgba(255,133,194,0.05) 100%);
-    border: 1px solid rgba(255,133,194,0.35);
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, rgba(255,20,147,0.30) 0%, rgba(255,20,147,0.08) 60%, transparent 100%);
+    border: 1.5px solid rgba(255,20,147,0.50);
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 30px rgba(255,133,194,0.22), inset 0 1px 0 rgba(255,255,255,0.08);
+    box-shadow: 0 0 30px rgba(255,20,147,0.22), inset 0 1px 0 rgba(255,255,255,0.10);
     margin-bottom: 4px;
   }
   .master-svg {
-    width: 30px; height: 30px;
-    color: var(--rose-bright);
-    filter: drop-shadow(0 0 10px rgba(255,133,194,1.0)) drop-shadow(0 0 20px rgba(255,133,194,0.60));
+    width: 36px; height: 36px;
+    color: #FF1493;
+    filter:
+      drop-shadow(0 0 6px rgba(255,20,147,1.0))
+      drop-shadow(0 0 16px rgba(255,20,147,0.80))
+      drop-shadow(0 0 32px rgba(255,20,147,0.45));
   }
 
   .master-name {
@@ -214,6 +217,15 @@ const masters = content.masters;
     text-align: center; color: var(--ink-mute); font-size: 0.74rem;
     letter-spacing: 0.16em; margin: 10px 0 0; padding-bottom: 4px;
   }
+
+  /* RTL fix */
+  [dir="rtl"] .m-arrow svg { transform: scaleX(-1); }
+
+  @keyframes masterGlow {
+    0%, 100% { box-shadow: 0 0 30px rgba(255,20,147,0.25); border-color: rgba(255,20,147,0.35); }
+    50%       { box-shadow: 0 0 70px rgba(255,20,147,0.55), 0 0 120px rgba(255,20,147,0.22); border-color: rgba(255,20,147,0.70); }
+  }
+  .master-icon { animation: masterGlow 2.8s ease-in-out infinite; }
 
   @media (max-width: 520px) {
     .masters-outer { gap: 6px; }

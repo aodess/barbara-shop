@@ -190,18 +190,21 @@ const categories = content.hairServices;
 
   /* SVG иконка категории */
   .price-card-icon {
-    width: 56px; height: 56px;
+    width: 72px; height: 72px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,133,194,0.18) 0%, rgba(255,133,194,0.06) 100%);
-    border: 1px solid rgba(255,133,194,0.30);
+    background: radial-gradient(circle at 40% 35%, rgba(255,20,147,0.28) 0%, rgba(255,133,194,0.10) 60%, transparent 100%);
+    border: 1.5px solid rgba(255,20,147,0.45);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 0 24px rgba(255,133,194,0.20);
+    box-shadow: 0 0 24px rgba(255,20,147,0.22), inset 0 1px 0 rgba(255,255,255,0.10);
   }
   .cat-svg {
-    width: 26px; height: 26px;
-    color: var(--rose-bright);
-    filter: drop-shadow(0 0 8px rgba(255,133,194,0.90)) drop-shadow(0 0 16px rgba(255,133,194,0.50));
+    width: 34px; height: 34px;
+    color: #FF1493;
+    filter:
+      drop-shadow(0 0 6px rgba(255,20,147,1.0))
+      drop-shadow(0 0 16px rgba(255,20,147,0.80))
+      drop-shadow(0 0 32px rgba(255,20,147,0.45));
   }
 
   .price-cat-label {
@@ -253,6 +256,15 @@ const categories = content.hairServices;
   .hair-photos-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
   }
+  /* RTL fix — зеркалим стрелки чтобы они смотрели наружу */
+  [dir="rtl"] .hair-arrow svg { transform: scaleX(-1); }
+
+  @keyframes iconPulse {
+    0%, 100% { box-shadow: 0 0 24px rgba(255,133,194,0.22); }
+    50%       { box-shadow: 0 0 56px rgba(255,133,194,0.55), 0 0 100px rgba(255,133,194,0.25); }
+  }
+  .price-card-icon { animation: iconPulse 3.2s ease-in-out infinite; }
+
   @media (max-width: 600px) {
     .hair-carousel-wrap { gap: 6px; }
     .hair-arrow { width: 36px; height: 36px; }
