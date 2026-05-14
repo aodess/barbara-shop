@@ -192,6 +192,69 @@ const soonLabel = pick({
       })();
     </script>
 
+    <!-- GSAP ScrollTrigger анимации -->
+    <script>
+      import gsap from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Анимация секций при скролле
+      gsap.utils.toArray('section').forEach(function(sec) {
+        var head = sec.querySelector('.section-head');
+        if (head) {
+          gsap.fromTo(head,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+              scrollTrigger: { trigger: sec, start: 'top 80%', once: true }
+            }
+          );
+        }
+        // Карточки с задержкой
+        var cards = sec.querySelectorAll('.price-card, .master-card, .ns-item');
+        if (cards.length) {
+          gsap.fromTo(cards,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+              stagger: 0.12,
+              scrollTrigger: { trigger: sec, start: 'top 75%', once: true }
+            }
+          );
+        }
+      });
+
+      // Hero параллакс
+      var heroBg = document.querySelector('.hero');
+      if (heroBg) {
+        gsap.to('.hero-graffiti .hg', {
+          yPercent: -25, ease: 'none',
+          scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.5 }
+        });
+      }
+    </script>
+
+    <!-- Cursor sparkle — только desktop -->
+    <script is:inline>
+      (function() {
+        if (!window.matchMedia('(pointer: fine)').matches) return;
+        var lastT = 0;
+        document.addEventListener('mousemove', function(e) {
+          var now = Date.now();
+          if (now - lastT < 90) return;
+          lastT = now;
+          var el = document.createElement('span');
+          var sz = Math.random() * 14 + 8;
+          el.textContent = '♥';
+          el.style.cssText = 'position:fixed;left:'+e.clientX+'px;top:'+e.clientY+'px;'
+            +'pointer-events:none;z-index:9999;font-size:'+sz+'px;'
+            +'color:#FF1493;text-shadow:0 0 8px rgba(255,20,147,.9);'
+            +'transform:translate(-50%,-50%);'
+            +'animation:cursorHeart .9s ease-out forwards;';
+          document.body.appendChild(el);
+          setTimeout(function(){ el.parentNode && el.parentNode.removeChild(el); }, 900);
+        });
+      })();
+    </script>
+
     <style>
       .nav-close-btn {
         position: absolute; top: 20px; inset-inline-end: 20px;

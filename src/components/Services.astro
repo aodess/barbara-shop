@@ -24,18 +24,26 @@ const categories = content.hairServices;
       </p>
     </div>
 
-    <!-- Карусель с кастомными стрелками по бокам -->
-    <div class="hair-carousel-wrap">
-      <button class="hair-arrow hair-arrow--prev" id="hair-prev" aria-label="Previous">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
+    <!-- Карусель — орнаментальная рамка -->
+    <div class="hair-carousel-outer card-ornament">
+      <!-- Счётчик слайдов -->
+      <div class="hair-counter" aria-live="polite">
+        <span class="hair-counter-cur" id="hair-cur">01</span>
+        <span class="hair-counter-sep">✦</span>
+        <span class="hair-counter-tot" id="hair-tot">01</span>
+      </div>
 
-      <div class="splide hair-splide" id="hair-splide" aria-label="Hair Services">
-        <div class="splide__track">
-          <ul class="splide__list">
-            {categories.map((cat, idx) => (
-              <li class="splide__slide">
-                <div class="price-card">
+      <div class="hair-carousel-wrap">
+        <button class="hair-arrow hair-arrow--prev" id="hair-prev" aria-label="Previous">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="splide hair-splide" id="hair-splide" data-count={categories.length.toString()} aria-label="Hair Services">
+          <div class="splide__track">
+            <ul class="splide__list">
+              {categories.map((cat, idx) => (
+                <li class="splide__slide">
+                  <div class="price-card card-ornament">
                   <div class="price-card-header">
 
                     <div class="price-card-icon">
@@ -89,15 +97,16 @@ const categories = content.hairServices;
                     <span class="price-card-heart">♥ ♥ ♥</span>
                   </div>
                 </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <button class="hair-arrow hair-arrow--next" id="hair-next" aria-label="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
+        <button class="hair-arrow hair-arrow--next" id="hair-next" aria-label="Next">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
     </div>
 
     <!-- Фото галерея (место под фото) -->
@@ -117,14 +126,27 @@ const categories = content.hairServices;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
+    var el  = document.getElementById('hair-splide');
+    var cnt = el ? parseInt(el.dataset.count || '1') : 1;
+    var cur = document.getElementById('hair-cur');
+    var tot = document.getElementById('hair-tot');
+    if (tot) tot.textContent = String(cnt).padStart(2, '0');
+
     var sp = new Splide('#hair-splide', {
       type:       'loop',
       perPage:    1,
       gap:        '1.5rem',
-      autoplay:   false,
+      autoplay:   true,
+      interval:   5000,
+      pauseOnHover: true,
       pagination: true,
       arrows:     false,
+      speed:      700,
     }).mount();
+
+    sp.on('moved', function(newIdx) {
+      if (cur) cur.textContent = String(newIdx + 1).padStart(2, '0');
+    });
 
     var prev = document.getElementById('hair-prev');
     var next = document.getElementById('hair-next');
@@ -135,6 +157,37 @@ const categories = content.hairServices;
 
 <style>
   .hair-section { background: var(--surface); }
+
+  /* Внешняя орнаментальная обёртка */
+  .hair-carousel-outer {
+    background: linear-gradient(145deg, rgba(255,20,147,0.04) 0%, rgba(240,216,152,0.02) 100%);
+    border: 1px solid rgba(255,20,147,0.14);
+    border-radius: var(--r-lg);
+    padding: clamp(20px, 4vw, 36px);
+    margin-bottom: 12px;
+  }
+
+  /* Счётчик слайдов */
+  .hair-counter {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 10px; margin-bottom: 16px;
+  }
+  .hair-counter-cur {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 2.2rem; font-weight: 300;
+    color: #FF1493;
+    text-shadow: 0 0 20px rgba(255,20,147,0.70);
+    line-height: 1;
+  }
+  .hair-counter-sep {
+    color: rgba(255,20,147,0.40); font-size: 0.8rem;
+    text-shadow: 0 0 10px rgba(255,20,147,0.50);
+  }
+  .hair-counter-tot {
+    font-family: var(--font-display); font-style: italic;
+    font-size: 1.1rem; font-weight: 300;
+    color: rgba(255,20,147,0.40); line-height: 1;
+  }
 
   /* Обёртка карусели с кнопками по бокам */
   .hair-carousel-wrap {

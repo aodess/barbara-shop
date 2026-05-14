@@ -39,9 +39,9 @@
   --r-xl:  50px;
   --max-w: 1160px;
 
-  --font-script: 'Dancing Script', cursive;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Raleway', 'Assistant', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', 'Assistant', system-ui, sans-serif;
 }
 
 [lang="he"] {
@@ -95,22 +95,24 @@ h1, h2, h3, h4 {
 }
 h1 {
   font-family: var(--font-script);
-  font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 600;
+  font-size: clamp(3.2rem, 10vw, 7.5rem); font-weight: 400; letter-spacing: 0.01em;
 }
 h2 {
-  font-family: var(--font-script);
-  font-size: clamp(1.9rem, 5vw, 3.4rem); font-weight: 600;
-  animation: h2Glow 4s ease-in-out infinite;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2rem, 5vw, 3.6rem); font-weight: 400; letter-spacing: 0.02em;
+  animation: h2Glow 4.5s ease-in-out infinite;
 }
 @keyframes h2Glow {
-  0%, 100% { text-shadow: 0 0 20px rgba(255,20,147,0.20); }
-  50%       { text-shadow: 0 0 40px rgba(255,20,147,0.45), 0 0 80px rgba(255,20,147,0.18); }
+  0%, 100% { text-shadow: 0 0 25px rgba(255,20,147,0.15); }
+  50%       { text-shadow: 0 0 50px rgba(255,20,147,0.40), 0 0 100px rgba(255,20,147,0.15); }
 }
 h3 {
-  font-family: var(--font-script);
-  font-size: clamp(1.3rem, 2.5vw, 1.9rem); font-weight: 600;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.5vw, 2.1rem); font-weight: 500; letter-spacing: 0.01em;
 }
-h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; }
+h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; }
 p  { margin: 0 0 1em 0; }
 
 .font-script {
@@ -337,11 +339,11 @@ section {
 }
 .brand-logo { width: 100%; height: 100%; object-fit: cover; }
 .brand-name {
-  font-family: var(--font-script); font-size: 1.4rem; font-weight: 600;
-  background: linear-gradient(135deg, var(--rose-bright) 0%, var(--gold) 100%);
+  font-family: var(--font-script); font-size: 1.9rem; font-weight: 400;
+  background: linear-gradient(135deg, var(--rose-bright) 0%, #FFD6F0 40%, var(--gold) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  line-height: 1;
+  line-height: 1; letter-spacing: 0.01em;
 }
 
 /* Header actions */
@@ -426,10 +428,10 @@ section {
 
 .nav-link {
   display: flex; align-items: center; gap: 12px;
-  color: var(--ink-soft); font-size: 1.3rem; font-family: var(--font-script);
-  font-weight: 600;
+  color: var(--ink-soft); font-size: 1.55rem; font-family: var(--font-display);
+  font-style: italic; font-weight: 400; letter-spacing: 0.02em;
   padding: 13px 16px; border-radius: var(--r-md);
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s, text-shadow 0.2s;
 }
 .nav-link .nav-heart { color: var(--rose-bright); font-style: normal; }
 .nav-link:hover {
@@ -454,11 +456,11 @@ section {
   text-align: center;
 }
 .footer-brand-name {
-  font-family: var(--font-script); font-size: 2rem; font-weight: 600;
-  background: linear-gradient(135deg, var(--rose-bright), var(--gold));
+  font-family: var(--font-script); font-size: 3rem; font-weight: 400;
+  background: linear-gradient(135deg, var(--rose-bright) 0%, #FFD6F0 40%, var(--gold) 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: block; margin-bottom: 6px;
+  display: block; margin-bottom: 8px; letter-spacing: 0.01em;
 }
 .footer-city { color: var(--ink-mute); font-size: 0.84rem; margin: 0 0 20px; }
 .footer-rights { color: var(--ink-mute); font-size: 0.80rem; margin: 0; }
@@ -552,6 +554,113 @@ section {
 .photo-placeholder-icon { font-size: 2.5rem; opacity: 0.5; }
 
 /* ===================== RESPONSIVE ===================== */
+
+/* ===================== ORNAMENT SYSTEM ===================== */
+
+/* L-образные рамки по углам карточки */
+.card-ornament {
+  position: relative;
+}
+.card-ornament::before,
+.card-ornament::after {
+  content: '';
+  position: absolute;
+  width: 30px; height: 30px;
+  pointer-events: none; z-index: 4;
+  border-color: rgba(255,20,147,0.65);
+  border-style: solid;
+  transition: border-color 0.3s, width 0.3s, height 0.3s;
+}
+.card-ornament::before {
+  top: 10px; left: 10px;
+  border-width: 1.5px 0 0 1.5px;
+}
+.card-ornament::after {
+  bottom: 10px; right: 10px;
+  border-width: 0 1.5px 1.5px 0;
+}
+.card-ornament:hover::before,
+.card-ornament:hover::after {
+  width: 38px; height: 38px;
+  border-color: #FF1493;
+  box-shadow: inset 0 0 8px rgba(255,20,147,0.15);
+}
+
+/* Орнаментальная линия под eyebrow */
+.section-head h2::after {
+  content: '── ✦ ── ♥ ── ✦ ──';
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.58rem; font-style: normal; font-weight: 400;
+  letter-spacing: 0.5em;
+  color: rgba(255,20,147,0.50);
+  text-shadow: 0 0 10px rgba(255,20,147,0.45);
+  margin-top: 10px;
+  -webkit-text-fill-color: rgba(255,20,147,0.50);
+}
+[lang="he"] .section-head h2::after { display: none; }
+
+/* Декоративная линия между секциями */
+section + section::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,20,147,0.15) 20%,
+    rgba(255,20,147,0.40) 50%,
+    rgba(255,20,147,0.15) 80%,
+    transparent 100%);
+  margin: 0 10%;
+}
+
+/* ===================== SPLIDE HEARTS ===================== */
+
+.splide__pagination {
+  gap: 4px !important;
+  align-items: center;
+  padding: 8px 0 0;
+}
+.splide__pagination__page {
+  background: transparent !important;
+  border: none !important;
+  width: auto !important; height: auto !important;
+  border-radius: 0 !important;
+  padding: 2px !important; margin: 0 !important;
+  font-size: 0 !important;
+  transition: transform 0.3s ease, filter 0.3s ease !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+}
+.splide__pagination__page::after {
+  content: '♥';
+  font-size: 1.0rem;
+  color: rgba(255,20,147,0.28);
+  display: block; line-height: 1;
+  transition: all 0.35s ease;
+}
+.splide__pagination__page.is-active {
+  transform: scale(1.2) !important;
+}
+.splide__pagination__page.is-active::after {
+  color: #FF1493 !important;
+  font-size: 1.2rem;
+  text-shadow: 0 0 14px rgba(255,20,147,0.95), 0 0 30px rgba(255,20,147,0.55);
+}
+
+/* Cursor heart keyframe */
+@keyframes cursorHeart {
+  0%   { opacity: 1; transform: translate(-50%,-50%) scale(1)    rotate(0deg); }
+  100% { opacity: 0; transform: translate(-50%,-150%) scale(0.3) rotate(25deg); }
+}
+
+/* GSAP reveal classes */
+.gsap-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.gsap-reveal-left  { opacity: 0; transform: translateX(-30px); }
+.gsap-reveal-right { opacity: 0; transform: translateX(30px); }
 
 /* ===================== GRAFFITI LAYER ===================== */
 
