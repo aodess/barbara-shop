@@ -7,23 +7,29 @@ const tr = t(lang);
 <section class="menu-section" id="menu">
   <div class="container menu-inner">
     <div class="menu-header">
-      <span class="eyebrow">The Menu</span>
-      <h2>{pick({ ru: 'Стильный прайс на уход', he: 'תפריט טיפוח מעודן', en: 'Signature Beauty Menu' }, lang)}</h2>
-      <p>{pick({ ru: 'Здесь собраны самые популярные процедуры, оформленные как роскошное меню.', he: 'כאן אספנו את הטיפולים הנפוצים ביותר בעיצוב תפריט יוקרתי.', en: 'Our most sought-after treatments styled as a premium menu.' }, lang)}</p>
+      <span class="eyebrow">Меню услуг</span>
+      <h2>{pick({ ru: 'Полный спектр красоты', he: 'מלוא ספקטרום היופי', en: 'Full Beauty Spectrum' }, lang)}</h2>
+      <p>{pick({ ru: 'Премиальные услуги, которые преобразят вас. Каждая процедура — это искусство.', he: 'שירותים פרימיום שישנו אותך. כל טיפול הוא אומנות.', en: 'Premium services to transform you. Every treatment is an art.' }, lang)}</p>
     </div>
 
-    <div class="menu-grid">
-      <div class="menu-preview">
-        <img src="/images/skin-menu.jpg" alt="Barbara Shop menu" />
+    <div class="menu-display">
+      <div class="menu-visual">
+        <img src="/images/skin-menu.jpg" alt="Barbara Shop services menu" class="menu-image" />
+        <div class="menu-badge">✨ Menu ✨</div>
       </div>
-      <div class="menu-content">
-        {content.services.map(service => (
-          <div class="menu-item">
-            <div>
-              <p class="menu-item-name">{service.name[lang] || service.name.ru}</p>
-              <p class="menu-item-note">{service.description[lang] || service.description.ru}</p>
+      
+      <div class="menu-list-grid">
+        {content.services.map((service, idx) => (
+          <div class="menu-item-block" key={service.id}>
+            <div class="menu-item-content">
+              <div class="item-number">{String(idx + 1).padStart(2, '0')}</div>
+              <div>
+                <p class="menu-item-name">{service.name[lang] || service.name.ru}</p>
+                <p class="menu-item-duration">{service.duration} {tr.services.duration}</p>
+              </div>
+              <div class="menu-item-price">{service.price} {content.pricing.currencySymbol}</div>
             </div>
-            <div class="menu-item-price">{service.price} {content.pricing.currencySymbol}</div>
+            <p class="menu-item-desc">{service.description[lang] || service.description.ru}</p>
           </div>
         ))}
       </div>

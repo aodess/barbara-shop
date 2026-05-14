@@ -13,11 +13,12 @@ const message = tr.booking.message
   .replace('{date}', '')
   .replace('{time}', '');
 ---
-<section class="hero" id="home" style={`background-image: linear-gradient(180deg, rgba(12,12,16,0.84), rgba(12,12,16,0.32)), url('${heroPhoto}')`}>
+<section class="hero" id="home" style={`background-image: linear-gradient(125deg, rgba(12,12,16,0.76), rgba(12,12,16,0.48)), linear-gradient(135deg, rgba(224,144,180,0.08), rgba(221,184,122,0.04)), url('${heroPhoto}')`}>
+  <div class="hero-overlay"></div>
   <div class="container hero-grid">
     <div class="hero-copy">
       <span class="eyebrow">{tr.hero.eyebrow}</span>
-      <h1>{content.brand.name}</h1>
+      <h1 class="hero-title">{content.brand.name}</h1>
       <p class="hero-text">{pick(content.salon.description, lang)}</p>
       <div class="hero-actions">
         <button class="btn btn-primary" type="button" data-booking-open>{tr.cta.book}</button>
@@ -28,13 +29,43 @@ const message = tr.booking.message
           <span class="status-dot"></span>
           {status.open ? tr.hours.open : tr.hours.closed}
         </span>
-        <span class="hero-sub">{pick({ ru: 'Премиальный уход в сердце Бат-Яма', he: 'טיפוח פרימיום בלב בת ים', en: 'Premium care in the heart of Bat Yam' }, lang)}</span>
+        <span class="hero-sub">{pick({ ru: 'Премиальный уход в Бат-Яме', he: 'טיפוח פרימיום בבת ים', en: 'Premium care in Bat Yam' }, lang)}</span>
       </div>
     </div>
     <div class="hero-brand-block">
+      <div class="hero-glow"></div>
       <img class="hero-logo" src="/images/logo.jpg" alt={content.brand.name} />
-      <div class="hero-brand-text">Luxury beauty studio</div>
-      <div class="hero-icons"><span>💖</span><span>💋</span><span>🌸</span></div>
+      <div class="hero-brand-text">Luxury Beauty Studio</div>
+      <div class="hero-icons"><span class="icon-heart">💖</span><span class="icon-lips">💋</span><span class="icon-flower">🌸</span></div>
     </div>
   </div>
 </section>
+
+<style>
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(65% 55% at 15% 20%, rgba(224,144,180,0.15), transparent 60%),
+                radial-gradient(50% 50% at 85% 85%, rgba(160,150,212,0.10), transparent 65%);
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute;
+    inset: -50px;
+    background: radial-gradient(circle, rgba(221,184,122,0.20), transparent 70%);
+    filter: blur(40px);
+    opacity: 0;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  .icon-heart { animation: float 3s ease-in-out infinite; }
+  .icon-lips { animation: float 3.5s ease-in-out infinite 0.2s; }
+  .icon-flower { animation: float 4s ease-in-out infinite 0.4s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+</style>
