@@ -1,0 +1,21 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const review = content.googleReviews;
+const reviewLabel = review.count > 0 ? `${review.rating} · ${review.count}` : pick({ ru: 'Пока нет отзывов', he: 'אין עדיין ביקורות', en: 'No reviews yet' }, lang);
+---
+<section class="reviews" id="reviews">
+  <div class="container review-card">
+    <div>
+      <span class="eyebrow">{tr.reviews.eyebrow}</span>
+      <h2>{tr.reviews.title}</h2>
+      <p class="review-subtitle">{pick({ ru: 'Лучшие рейтинги и искренние отзывы.', he: 'דירוגים מצטיינים וביקורות כנות.', en: 'Top ratings and honest feedback.' }, lang)}</p>
+    </div>
+    <div class="review-score">
+      <span class="review-value">{reviewLabel}</span>
+      {review.url ? <a class="btn btn-ghost" href={review.url} target="_blank" rel="noreferrer">{tr.reviews.link}</a> : null}
+    </div>
+  </div>
+</section>

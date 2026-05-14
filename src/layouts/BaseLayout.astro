@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import StickyBar from '../components/StickyBar.astro';
+import Booking from '../components/Booking.astro';
+import content from '../data/content.json';
+import { pick, isRTL } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const dir = isRTL(lang) ? 'rtl' : 'ltr';
+const logo = content.brand.logo || '/images/logo.jpg';
+const brandName = content.brand.name;
+const nav = [
+  { href: '#services', label: pick({ ru: 'Услуги', he: 'שירותים', en: 'Services' }, lang) },
+  { href: '#gallery', label: pick({ ru: 'Работы', he: 'עבודות', en: 'Gallery' }, lang) },
+  { href: '#masters', label: pick({ ru: 'Мастера', he: 'צוות', en: 'Team' }, lang) },
+  { href: '#menu', label: pick({ ru: 'Меню', he: 'תפריט', en: 'Menu' }, lang) },
+  { href: '#contacts', label: pick({ ru: 'Контакты', he: 'צור קשר', en: 'Contact' }, lang) },
+];
+---
+<html lang={lang} dir={dir}>
+  <SeoHead lang={lang} />
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href={`/${lang}/`}>
+            <img class="brand-logo" src={logo} alt={brandName} />
+            <div class="brand-copy">
+              <span class="brand-name">{brandName}</span>
+            </div>
+          </a>
+          <nav class="site-nav">
+            {nav.map(item => (
+              <a class="nav-link" href={item.href}>{item.label}</a>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      <main>{Astro.slots.default}</main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div>
+            <p class="footer-brand">{brandName}</p>
+            <p>{pick(content.salon.description, lang)}</p>
+          </div>
+          <p class="footer-rights">&copy; {new Date().getFullYear()} {brandName}. {pick({ ru: 'Все права защищены.', he: 'כל הזכויות שמורות.', en: 'All rights reserved.' }, lang)}</p>
+        </div>
+      </footer>
+
+      <StickyBar lang={lang} />
+      <Booking lang={lang} />
+    </div>
+  </body>
+</html>

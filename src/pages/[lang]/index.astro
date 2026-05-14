@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Menu from '../../components/Menu.astro';
+import Gallery from '../../components/Gallery.astro';
+import Masters from '../../components/Masters.astro';
+import Reviews from '../../components/Reviews.astro';
+import Contacts from '../../components/Contacts.astro';
+import { LOCALES } from '../../lib/i18n.js';
+
+export function getStaticPaths() {
+  return LOCALES.map(lang => ({ params: { lang } }));
+}
+const { lang } = Astro.params;
+---
+
+<BaseLayout lang={lang}>
+  <Hero     lang={lang} />
+  <Services lang={lang} />
+  <Menu     lang={lang} />
+  <Gallery  lang={lang} />
+  <Masters  lang={lang} />
+  <Reviews  lang={lang} />
+  <Contacts lang={lang} />
+</BaseLayout>

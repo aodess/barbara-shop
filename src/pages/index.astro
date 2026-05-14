@@ -1,0 +1,30 @@
+---
+import { LOCALES, FALLBACK_LOCALE } from '../lib/i18n.js';
+import content from '../data/content.json';
+---
+<!doctype html>
+<html lang={FALLBACK_LOCALE}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{content.brand.name}</title>
+    {LOCALES.map(l => <link rel="alternate" hreflang={l} href={`/${l}/`} />)}
+    <link rel="alternate" hreflang="x-default" href={`/${FALLBACK_LOCALE}/`} />
+    <script set:html={`
+      (function(){
+        var locales=${JSON.stringify(LOCALES)}, fallback=${JSON.stringify(FALLBACK_LOCALE)};
+        var nav=(navigator.language||navigator.userLanguage||fallback).toLowerCase();
+        var match=fallback;
+        for(var i=0;i<locales.length;i++){if(nav.indexOf(locales[i])===0){match=locales[i];break;}}
+        location.replace('/'+match+'/');
+      })();
+    `} />
+    <!-- meta refresh только для роботов без JS — не вызывает двойную загрузку -->
+    <noscript>
+      <meta http-equiv="refresh" content={`0; url=/${FALLBACK_LOCALE}/`} />
+    </noscript>
+  </head>
+  <body style="background:#0C0C10;color:#F5EEE8;font-family:system-ui;padding:40px;text-align:center;">
+    <noscript><p>Redirecting to <a href={`/${FALLBACK_LOCALE}/`}>{content.brand.name}</a>…</p></noscript>
+  </body>
+</html>

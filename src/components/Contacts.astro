@@ -1,0 +1,48 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+import { whatsappLink } from '../lib/seo.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const hours = content.hours;
+const whatsapp = content.contacts.whatsapp || '+972501234567';
+const mapUrl = content.salon.googleMapsUrl || `https://www.google.com/maps/search/${encodeURIComponent(pick(content.salon.address, lang) || content.salon.city[lang] || content.salon.city.ru)}`;
+---
+<section class="contacts" id="contacts">
+  <div class="container contacts-grid">
+    <div class="contacts-card card">
+      <span class="eyebrow">{tr.contacts.title}</span>
+      <h2>{pick({ ru: 'Готовы принять вас', he: 'מוכנים לקבל את פניכם', en: 'Ready to welcome you' }, lang)}</h2>
+      <p class="contact-note">{tr.contacts.writePrefer}</p>
+      <div class="contact-row">
+        <strong>{tr.contacts.address}</strong>
+        <p>{pick(content.salon.address, lang)}</p>
+      </div>
+      <div class="contact-row">
+        <strong>{tr.contacts.schedule}</strong>
+        <div class="hours-list">
+          {Object.entries(hours).map(([key, value]) => (
+            <div class="hours-row" key={key}>
+              <span>{tr.hours[key]}</span>
+              <span>{value.closed ? pick({ ru: 'выходной', he: 'חג סגור', en: 'Closed' }, lang) : `${value.open} — ${value.close}`}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="contact-actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(whatsapp)} target="_blank" rel="noreferrer">{tr.cta.whatsapp}</a>
+        <a class="btn btn-map" href={mapUrl} target="_blank" rel="noreferrer">{tr.cta.viewMap}</a>
+      </div>
+    </div>
+    <div class="contacts-map card">
+      {content.salon.googleMapsEmbedUrl ? (
+        <iframe src={content.salon.googleMapsEmbedUrl} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      ) : (
+        <div class="map-fallback">
+          <p>{pick({ ru: 'Карта будет добавлена сюда после внесения ссылки Google Maps.', he: 'מפה תתווסף לכאן לאחר עדכון קישור Google Maps.', en: 'Map will appear here after adding a Google Maps URL.' }, lang)}</p>
+          <a class="btn btn-ghost" href={mapUrl} target="_blank" rel="noreferrer">{tr.cta.viewMap}</a>
+        </div>
+      )}
+    </div>
+  </div>
+</section>

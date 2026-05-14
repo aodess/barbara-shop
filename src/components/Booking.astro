@@ -1,0 +1,67 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+import { whatsappLink } from '../lib/seo.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const whatsapp = content.contacts.whatsapp || '+972501234567';
+const today = new Date().toISOString().split('T')[0];
+const times = ['10:00', '11:30', '13:00', '15:00', '17:00', '19:00'];
+const messageSkeleton = tr.booking.message;
+---
+<section class="booking" id="booking">
+  <div class="booking-shell container">
+    <button class="booking-close" data-booking-close type="button">✕</button>
+    <div class="booking-body">
+      <span class="eyebrow">{tr.booking.title}</span>
+      <h2>{pick({ ru: 'Забронируйте время', he: 'הזמינו תור', en: 'Book your visit' }, lang)}</h2>
+      <form class="booking-form" id="booking-form">
+        <label>
+          {tr.booking.stepDay}
+          <input type="date" name="date" value={today} min={today} />
+        </label>
+        <label>
+          {pick({ ru: 'Время', he: 'שעה', en: 'Time' }, lang)}
+          <select name="time">
+            {times.map(time => <option value={time}>{time}</option>)}
+          </select>
+        </label>
+        <button class="btn btn-primary" type="submit">{tr.cta.book}</button>
+      </form>
+    </div>
+  </div>
+  <script type="module">
+    const dialog = document.querySelector('.booking');
+    const openButtons = document.querySelectorAll('[data-booking-open]');
+    const closeButtons = document.querySelectorAll('[data-booking-close]');
+    const form = document.getElementById('booking-form');
+    const whatsapp = '{whatsapp}';
+    const messageTemplate = `{messageSkeleton}`;
+
+    function openDialog() {
+      dialog.classList.add('booking-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDialog() {
+      dialog.classList.remove('booking-open');
+      document.body.style.overflow = '';
+    }
+    openButtons.forEach(btn => btn.addEventListener('click', openDialog));
+    closeButtons.forEach(btn => btn.addEventListener('click', closeDialog));
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) closeDialog();
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const date = formData.get('date');
+      const time = formData.get('time');
+      const message = messageTemplate
+        .replace('{day}', date)
+        .replace('{date}', date)
+        .replace('{time}', time);
+      const link = `https://wa.me/${whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+      window.open(link, '_blank');
+    });
+  </script>
+</section>

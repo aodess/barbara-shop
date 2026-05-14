@@ -1,0 +1,40 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+import { computeStatus } from '../lib/businessHours.js';
+import { whatsappLink } from '../lib/seo.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const heroPhoto = content.brand.heroPhotos[0] || '/images/photo_2026-05-14_11-23-24.jpg';
+const status = computeStatus(content.hours);
+const whatsapp = content.contacts.whatsapp || '+972501234567';
+const message = tr.booking.message
+  .replace('{day}', pick({ ru: 'завтра', he: 'מחר', en: 'tomorrow' }, lang))
+  .replace('{date}', '')
+  .replace('{time}', '');
+---
+<section class="hero" id="home" style={`background-image: linear-gradient(180deg, rgba(12,12,16,0.84), rgba(12,12,16,0.32)), url('${heroPhoto}')`}>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">{tr.hero.eyebrow}</span>
+      <h1>{content.brand.name}</h1>
+      <p class="hero-text">{pick(content.salon.description, lang)}</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" type="button" data-booking-open>{tr.cta.book}</button>
+        <a class="btn btn-rose" href={whatsappLink(whatsapp, message)} target="_blank" rel="noreferrer">{tr.cta.whatsapp}</a>
+      </div>
+      <div class="hero-meta">
+        <span class={`status-pill ${status.open ? 'status-open' : 'status-closed'}`}>
+          <span class="status-dot"></span>
+          {status.open ? tr.hours.open : tr.hours.closed}
+        </span>
+        <span class="hero-sub">{pick({ ru: 'Премиальный уход в сердце Бат-Яма', he: 'טיפוח פרימיום בלב בת ים', en: 'Premium care in the heart of Bat Yam' }, lang)}</span>
+      </div>
+    </div>
+    <div class="hero-brand-block">
+      <img class="hero-logo" src="/images/logo.jpg" alt={content.brand.name} />
+      <div class="hero-brand-text">Luxury beauty studio</div>
+      <div class="hero-icons"><span>💖</span><span>💋</span><span>🌸</span></div>
+    </div>
+  </div>
+</section>

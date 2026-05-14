@@ -1,0 +1,18 @@
+{
+  "name": "barbara-shop",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "webp": "node scripts/to-webp.js"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "@splidejs/splide": "^4.1.4"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

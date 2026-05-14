@@ -1,0 +1,31 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+---
+<section class="masters" id="masters">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">{tr.masters.eyebrow}</span>
+      <h2>{tr.masters.title}</h2>
+    </div>
+    <div class="masters-grid">
+      {content.masters.map(master => (
+        <article class="card master-card" key={master.id}>
+          <div class="master-photo-wrap">
+            <img src={master.photo} alt={master.name[lang] || master.name.ru} />
+          </div>
+          <div class="master-body">
+            <p class="master-name">{master.name[lang] || master.name.ru}</p>
+            <p class="master-role">{master.role[lang] || master.role.ru}</p>
+            <p class="master-experience">{master.experienceYears} {tr.masters.experience}</p>
+            <ul class="master-skills">
+              {master.specialties[lang]?.map(item => <li>{item}</li>) || master.specialties.ru.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

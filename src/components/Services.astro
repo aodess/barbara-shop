@@ -1,0 +1,49 @@
+---
+import content from '../data/content.json';
+import { t, pick } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const groups = Array.from(content.services.reduce((map, service) => {
+  const category = service.category || 'other';
+  if (!map.has(category)) {
+    map.set(category, []);
+  }
+  map.get(category).push(service);
+  return map;
+}, new Map()));
+const categoryNames = {
+  hair: { ru: 'Волосы', he: 'שיער', en: 'Hair' },
+  nails: { ru: 'Ногти', he: 'ציפורניים', en: 'Nails' },
+  face: { ru: 'Лицо', he: 'פנים', en: 'Face' },
+  other: { ru: 'Другие', he: 'אחרים', en: 'Other' },
+};
+---
+<section class="services" id="services">
+  <div class="container section-split">
+    <div class="services-copy">
+      <span class="eyebrow">{tr.services.title}</span>
+      <h2>{pick({ ru: 'Меню ухода и стилистики', he: 'תפריט טיפוח וסטייל', en: 'Care & Style Menu' }, lang)}</h2>
+      <p class="section-intro">{pick({ ru: 'Нежно, роскошно и эффектно — в каждом образе.', he: 'עדין, יוקרתי ובולט — בכל מראה.', en: 'Soft, luxurious and expressive in every look.' }, lang)}</p>
+      <div class="service-pill-grid">
+        {groups.map(([category, items]) => (
+          <div class="service-group-card">
+            <p class="service-group-label">{pick(categoryNames[category], lang)}</p>
+            <p class="service-group-meta">{items.length} {pick({ ru: 'процедуры', he: 'טיפולים', en: 'services' }, lang)}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="services-list">
+      {content.services.map(service => (
+        <article class="card service-card">
+          <div class="service-title">
+            <h3>{service.name[lang] || service.name.ru}</h3>
+            <span class="service-price">{service.price} {content.pricing.currencySymbol}</span>
+          </div>
+          <p class="service-meta">{service.duration} {tr.services.duration}</p>
+          <p class="service-desc">{service.description[lang] || service.description.ru}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

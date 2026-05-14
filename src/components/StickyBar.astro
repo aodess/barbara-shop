@@ -1,0 +1,12 @@
+---
+import content from '../data/content.json';
+import { t } from '../lib/i18n.js';
+import { whatsappLink } from '../lib/seo.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const whatsapp = content.contacts.whatsapp || '+972501234567';
+---
+<div class="sticky-bar">
+  <button class="btn btn-primary" type="button" data-booking-open>{tr.cta.book}</button>
+  <a class="btn btn-whatsapp" href={whatsappLink(whatsapp)} target="_blank" rel="noreferrer">{tr.cta.whatsapp}</a>
+</div>

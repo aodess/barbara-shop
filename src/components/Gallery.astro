@@ -1,0 +1,44 @@
+---
+import content from '../data/content.json';
+import { t } from '../lib/i18n.js';
+const { lang } = Astro.props;
+const tr = t(lang);
+const photos = content.gallery.photos;
+---
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">{tr.gallery.eyebrow}</span>
+      <h2>{tr.gallery.title}</h2>
+    </div>
+    <div class="splide" id="gallery-splide" aria-label={tr.gallery.title}>
+      <div class="splide__track">
+        <ul class="splide__list">
+          {photos.map(photo => (
+            <li class="splide__slide">
+              <img src={photo.src} alt={photo.alt?.[lang] || ''} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide-core.min.css" />
+  <script type="module">
+    import Splide from '@splidejs/splide';
+    new Splide('#gallery-splide', {
+      type: 'loop',
+      perPage: 3,
+      perMove: 1,
+      gap: '1.5rem',
+      autoplay: true,
+      interval: 4500,
+      pauseOnHover: true,
+      breakpoints: {
+        900: { perPage: 2 },
+        600: { perPage: 1 },
+      },
+    }).mount();
+  </script>
+</section>
