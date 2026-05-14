@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import Services from '../../components/Services.astro';
+import Gallery from '../../components/Gallery.astro';
 import Masters from '../../components/Masters.astro';
 import NailsSkin from '../../components/NailsSkin.astro';
 import Contacts from '../../components/Contacts.astro';
@@ -16,6 +17,7 @@ const { lang } = Astro.params;
 <BaseLayout lang={lang}>
   <Hero      lang={lang} />
   <Services  lang={lang} />
+  <Gallery   lang={lang} />
   <Masters   lang={lang} />
   <NailsSkin lang={lang} />
   <Contacts  lang={lang} />

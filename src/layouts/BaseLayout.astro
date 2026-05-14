@@ -40,7 +40,12 @@ const soonLabel = pick({
           <div class="brand-logo-wrap">
             <img class="brand-logo" src={logo} alt={brandName} />
           </div>
-          <span class="brand-name">{brandName}</span>
+          <span class="brand-text">
+            <span class="brand-name">{brandName}</span>
+            <span class="brand-tagline">
+              {pick({ ru: 'Салон красоты · Петах-Тиква', he: 'סלון יופי · פתח תקווה', en: 'Beauty Salon · Petah Tikva' }, lang)}
+            </span>
+          </span>
         </a>
 
         <!-- Действия -->
@@ -103,7 +108,7 @@ const soonLabel = pick({
     </nav>
 
     <!-- Контент -->
-    <main><slot /></main>
+    <main class="site-main"><slot /></main>
 
     <!-- Футер -->
     <footer class="site-footer">
@@ -121,7 +126,7 @@ const soonLabel = pick({
     <div class="booking-overlay" id="booking-soon" role="dialog" aria-modal="true">
       <div class="booking-box" style="position:relative;">
         <button class="booking-close" id="booking-close" aria-label="Close">✕</button>
-        <div style="font-size:2.5rem;margin-bottom:12px;">💋</div>
+        <div style="font-size:2.5rem;margin-bottom:12px;color:var(--rose-bright);text-shadow:0 0 24px rgba(255,133,194,0.7);">♥</div>
         <h3>{pick({ ru: 'Совсем скоро', he: 'בקרוב', en: 'Coming Soon' }, lang)}</h3>
         <p>{soonLabel}</p>
         <a
