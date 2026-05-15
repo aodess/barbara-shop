@@ -68,12 +68,15 @@ const photos = content.gallery.photos;
     position: absolute; inset: 0;
     opacity: 0;
     transition: opacity 1s ease;
+    /* Лёгкий зум — клиппит светлые рамки, которые есть в исходниках фото */
+    transform: scale(1.05);
+    transform-origin: center center;
   }
   .gallery-slide-inner.is-active { opacity: 1; }
   .gallery-slide-inner img {
     width: 100%; height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center center;
     display: block;
   }
 

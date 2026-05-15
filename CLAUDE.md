@@ -1,29 +1,30 @@
 # CLAUDE.md — Barbara Shop
 
-> Читай этот файл первым. Работай блоками с коммитами. Не объясняй — делай.
+> Читай этот файл первым. Делай, не объясняй. Коммить после каждого блока.
 
 ---
 
 ## ЗАПУСК И ДЕПЛОЙ
 
 ```
-npm run dev       # http://localhost:4321
-npm run build     # проверить сборку перед деплоем
-railway up        # деплой на прод (НЕ git push)
+npm run dev      # http://localhost:4321
+npm run build    # проверить перед деплоем
+railway up       # деплой на прод
+git push         # GitHub (только история, не триггерит деплой)
 ```
 
-**URL:** `https://barbara-shop-production.up.railway.app`  
-**Деплой только через `railway up`.** Push в git = просто история.
+**Прод:** `https://barbara-shop-production.up.railway.app`
+**Деплой:** только `railway up`. Не через GitHub.
 
 ---
 
 ## ПРОЕКТ
 
-**Barbara Shop** — сайт-визитка салона красоты, Петах-Тиква, Израиль.  
-Три языка: `ru` (основной), `he` (иврит, RTL), `en`.  
-Без бэкенда. Весь контент — `src/data/content.json`.  
-Связь с клиентами — только WhatsApp. Кнопок `tel:` нет.  
-Владелец (Евгений) — не программист. Просит правки в чате.
+Сайт-визитка салона красоты в Петах-Тикве, Израиль.
+3 языка: `ru` (основной), `he` (иврит), `en`.
+Без бэкенда. Контент — `src/data/content.json`.
+Запись — только WhatsApp (StickyBar внизу). Никаких `tel:`.
+Владелец (Евгений) не программист — просит правки в чате.
 
 ---
 
@@ -32,12 +33,11 @@ railway up        # деплой на прод (НЕ git push)
 | | |
 |---|---|
 | Генератор | Astro 4, static output |
-| Стили | Чистый CSS, переменные. Никакого Tailwind |
-| Карусели | Splide.js через CDN (глобальный `window.Splide`), `is:inline` скрипты |
-| Анимации | GSAP 3 через npm, `ScrollTrigger` |
-| Фото | WebP — `npm run webp` (sharp), исходники в `originals/`, коммитить только WebP |
-| Данные | `src/data/content.json` |
-| Деплой | Railway |
+| Стили | чистый CSS с переменными, без Tailwind |
+| Карусели | Splide.js v4 через CDN, `is:inline` скрипты (только Services + Masters) |
+| Анимации | GSAP 3 (npm) + CSS transitions/keyframes |
+| Фото | WebP — `npm run webp` (sharp). Исходники в `originals/` (не коммитить), коммитить только webp |
+| Деплой | Railway (через `railway up`) |
 
 **Никогда:** React, Vue, Tailwind, бэкенд, БД, localStorage.
 
@@ -47,41 +47,42 @@ railway up        # деплой на прод (НЕ git push)
 
 ```
 src/
-  data/content.json        ← весь контент: услуги, галерея, мастера, тексты
+  data/content.json         ← весь контент (услуги, фото, мастера, тексты)
   lib/
-    i18n.js                ← t(), pick(), isRTL(), LOCALES
-    businessHours.js       ← статус открыто/закрыто (Asia/Jerusalem)
-    seo.js                 ← JSON-LD BeautySalon
-  styles/global.css        ← переменные, типографика, header, footer, splide
+    i18n.js                 ← t(), pick(), isRTL, LOCALES
+    businessHours.js        ← статус открыто/закрыто (Asia/Jerusalem)
+    seo.js                  ← JSON-LD BeautySalon
+  styles/global.css         ← переменные, шапка, футер, sticky, граффити, типографика
+  layouts/BaseLayout.astro  ← <html>, шапка, плавающее меню, граффити-фон, футер, GSAP
   components/
-    SeoHead.astro          ← <head>: meta, OG, JSON-LD, hreflang
-    Hero.astro             ← лого-кружок, название, фото салона, статы
-    Services.astro         ← карусель карточек с ценами (hairServices)
-    Gallery.astro          ← карусель фото работ + лайтбокс
-    Masters.astro          ← карточки мастеров
-    NailsSkin.astro        ← маникюр + косметология
-    Contacts.astro         ← часы, адрес, карта, WhatsApp
-    StickyBar.astro        ← нижняя панель: Записаться + WhatsApp
-  layouts/BaseLayout.astro ← шапка, футер, меню, граффити-фон, GSAP
+    SeoHead.astro           ← <head>: meta, OG, JSON-LD, hreflang
+    Hero.astro              ← подзаголовок + meta-строка (инста, open/closed, Google★★★★★) + фото салона + описание
+    Services.astro          ← карусель Splide: 2 страницы × 4 услуги (без автопрокрутки)
+    Gallery.astro           ← слайд-шоу с crossfade (без карусели, без клика, авто 2с)
+    Masters.astro           ← карусель Splide: карточки мастеров
+    NailsSkin.astro         ← маникюр + косметология, single-column
+    Contacts.astro          ← часы, адрес, WhatsApp, IG, Google Maps
+    StickyBar.astro         ← нижняя панель: Записаться + WhatsApp
   pages/
-    index.astro            ← редирект на язык
-    [lang]/index.astro     ← одна страница × 3 языка
+    index.astro             ← редирект на язык
+    [lang]/index.astro      ← одна страница × 3 языка
+    sitemap.xml.js          ← динамический sitemap
 public/images/
-  *.webp                   ← коммитить
-  originals/               ← НЕ коммитить
-  shapka.webp              ← фото в шапке сайта
-  salon.webp               ← фото в Hero
-  1.webp – 7.webp          ← галерея работ
-  logo.jpg                 ← лого кружок
+  shapka.webp 1200×584      ← баннер шапки
+  salon.webp                ← фото в Hero
+  1.webp – 7.webp           ← портфолио
+  menu.webp 561×1484        ← фон выпадающего меню
+  logo.jpg                  ← лого-кружок в шапке
+  originals/                ← исходники, НЕ коммитить
 ```
 
 ---
 
 ## ДИЗАЙН-СИСТЕМА
 
-**Эстетика:** тёмный люкс, barbie-pink неон. Фон почти чёрный. Акценты — горячий розовый (`#FF1493`, `#FF85C2`) + золото (`#F0D898`). Повсюду плавающие сердечки ♥.
+**Эстетика:** тёмный люкс, barbie-pink неон. Фон почти чёрный, акценты — горячий розовый (`#FF1493`, `#FF85C2`) + золото (`#F0D898`). Плавающие сердечки ♥ на фоне.
 
-### Актуальные CSS-переменные (global.css)
+### CSS-переменные (global.css)
 
 ```css
 --paper:          #080810;
@@ -91,155 +92,106 @@ public/images/
 --rose-bright: #FF85C2;
 --rose:        #E8709E;
 --rose-deep:   #C04880;
---rose-glow:   rgba(255,133,194,0.25);
-
 --gold:        #F0D898;
---gold-deep:   #C89040;
 
 --ink:      #FFF0F8;
 --ink-soft: #D8C8D8;
 --ink-mute: #806878;
 
---font-script:  'Great Vibes', cursive;       ← название "Barbara Shop"
---font-display: 'Cormorant Garamond', serif;  ← заголовки
---font-body:    'Jost', sans-serif;           ← текст
+--font-script:  'Great Vibes';        ← название бренда
+--font-display: 'Cormorant Garamond'; ← заголовки
+--font-body:    'Jost';               ← текст
 
---r-lg: 28px;  --r-xl: 50px;  --max-w: 1160px;
+/* Вертикальный мобильный макет на всех экранах */
+--max-w: 600px;
 ```
 
-**[lang="he"] переопределяет только:**
-```css
---font-body:    'Assistant', sans-serif;
---font-display: 'Frank Ruhl Libre', serif;
-```
-**НЕ трогает `--font-script`** — иначе Great Vibes сломается на иврите.
-
-### Шрифты Google Fonts
-
-```
-Great Vibes — для brand-name
-Cormorant Garamond — заголовки
-Jost — основной текст
-Frank Ruhl Libre + Assistant — иврит
-```
+`[lang="he"]` переопределяет только `--font-body` (Assistant) и `--font-display` (Frank Ruhl Libre). НЕ трогает `--font-script` — иначе Great Vibes ломается.
 
 ---
 
-## ШАПКА (BaseLayout.astro)
+## АРХИТЕКТУРНЫЕ РЕШЕНИЯ (важно)
 
-Текущая структура:
-```
-<header.site-header>  ← sticky, с фото shapka.webp за стеклом
-  .header-shapka-bg   ← абсолютное фото, opacity 0.18–0.32
-  .header-top         ← лого + языки + Instagram + бургер
-</header>
-<nav.nav-dropdown>    ← выезжает справа по кнопке ☰
-```
+### Документ всегда `dir="ltr"` для всех языков
 
-**Языки (RU/HE/EN)** — в `.header-langs-inline` внутри `.header-top`.  
-Кнопки "Записаться" в шапке нет — только в StickyBar снизу.
+`BaseLayout.astro` форсит `const dir = 'ltr'`. Структура (карусели, шапка, колонки) на иврите **идентична** русской. Иврит-текст рендерится справа-налево сам — через Unicode bidi.
 
-**Мобильная шапка** — растягивается вниз до кружка-логотипа Hero:
-```css
-/* global.css */
-@media (max-width: 820px) {
-  .site-header:not(.scrolled) { padding-block-end: 160px; border-bottom: none; }
-  .site-header.scrolled       { padding-block-end: 4px; }
-}
-```
-При скролле шапка сжимается (CSS transition на padding).  
-`.scrolled` класс добавляется через JS при `window.scrollY > 50`.
+**Почему:** RTL-мод Splide ломает мобильную вёрстку, `[dir="rtl"]` CSS-хаки множатся. С LTR-структурой иврит «просто работает», а пара точечных правок (`row-reverse` в строках прайса) делает текст-выравнивание адекватным.
 
----
+### Вертикальный «мобильный» макет на всех экранах
 
-## SPLIDE — ВАЖНЫЕ ПРАВИЛА
+`--max-w: 600px`. Hero/Services/Gallery/NailsSkin/Contacts — single-column всегда. На широких экранах контент — узкая колонка по центру, по краям тёмный фон + граффити-сердечки.
 
-Splide подключён через CDN в `<head>`, скрипты с `is:inline`.
+### Шапка — баннер с фото, не sticky
 
-**НЕЛЬЗЯ добавлять `direction: isRTL ? 'rtl' : 'ltr'`** в конфиг Splide —  
-это ломает мобильную вёрстку на иврите (карточки съезжают за экран).  
-RTL-поведение достигается только через CSS `[dir="rtl"]` в `global.css`.
+`.site-header` это `position: relative; aspect-ratio: 1200/584; max-width: var(--max-w)`. Контент налезает снизу через `.site-main { margin-top: -54px; z-index: 5 }`. Плавный градиент-фейд `.header-shapka-bg::after` (до `var(--paper)` снизу) — без чёткой полосы.
 
-**RTL стрелки** — зеркалить через `global.css` (не через Astro scoped CSS):
-```css
-/* Scoped CSS Astro не достигает [dir="rtl"] на <html> — только global.css */
-[dir="rtl"] .hair-arrow svg,
-[dir="rtl"] .m-arrow svg { transform: scaleX(-1) !important; }
-```
+Бургер-меню вынесено в `.floating-menu` (`position: fixed; top-right`) — доступно при любой прокрутке.
+
+### Position: fixed на iOS — БЕЗ backdrop-filter
+
+`backdrop-filter` на `position: fixed` элементах ломает скролл на iOS Safari (элементы «гуляют»). У `.sticky-bar`, `.floating-menu`, `.nav-dropdown` — сплошной тёмный фон.
+
+`overflow-x: hidden` НЕ на body (иначе body становится скролл-контейнером и тоже ломает fixed). На `<html>` — `hidden`, на `<body>` — `clip` (clip не создаёт скролл-контейнер).
+
+### Galleria — НЕ карусель, а fade-slideshow
+
+В Gallery нет Splide. Все 7 фото абсолютно наложены, активный имеет `opacity: 1`, остальные `0`. JS `setInterval(2000)` переключает класс `is-active`. Точки внизу — декор (`pointer-events: none`). Лайтбокса нет, клик не работает.
+
+Фото с белыми каёмками в исходниках клиппятся через `transform: scale(1.05)` + `overflow: hidden` на рамке.
+
+### Splide где остался
+
+Только Services (`#hair-splide`, 2 слайда, без autoplay, со стрелками) и Masters (`#masters-splide`, autoplay, со стрелками). Подключён через CDN в `<head>`.
+
+**Никогда не добавлять `direction: 'rtl'` в Splide-конфиг** — ломает мобиль. С `dir="ltr"` это и не нужно.
 
 ---
 
-## GSAP
+## КОНТЕНТ — что есть, что нужно
 
-Подключён через npm. Анимирует `.section-head` при скролле.  
-**НЕ анимировать карточки** (`.price-card`, `.master-card`, `.ns-item`) через `fromTo({ opacity:0 })` —  
-вызывает мигание на странице (карточки рендерятся невидимыми).
+**Есть:**
+- 7 фото портфолио, логотип, баннер шапки, фото салона
+- Прайс: 3 категории (8 услуг) — рендерятся как 2 страницы × 4
+- 3 мастера (без фото — пока SVG-иконки)
+- Реальный URL отзывов Google: `googleReviews.url`
+- Instagram: `barbara_shop__`
+
+**Нужно от владельца:**
+- Реальный WhatsApp-номер → `contacts.whatsapp`
+- Реальный адрес и координаты → `salon.address`, `salon.geo`
+- Фото мастеров (3 шт.) → подкладывать вместо SVG-иконок в Masters
+- Фото для маникюра/косметологии (вместо placeholder в NailsSkin)
+- OG-картинка `public/images/og.jpg` (1200×630)
 
 ---
 
-## ИЗВЕСТНЫЕ ПРОБЛЕМЫ И РЕШЕНИЯ
-
-### Иврит (RTL)
+## ИЗВЕСТНЫЕ ПОДВОДНЫЕ КАМНИ
 
 | Проблема | Решение |
 |---|---|
-| Шрифт Great Vibes не работает на иврите | `[lang="he"]` НЕ должен переопределять `--font-script` |
-| Стрелки карусели смотрят внутрь на иврите | `[dir="rtl"] .arrow svg { transform: scaleX(-1) }` в `global.css` |
-| Splide-карточки съезжают на мобиле | Убрать `direction: isRTL ? 'rtl' : 'ltr'` из всех Splide конфигов |
-| Scoped CSS Astro не достигает `[dir="rtl"]` | Писать RTL-фиксы только в `global.css` |
-
-### Шапка
-
-| Проблема | Решение |
-|---|---|
-| Название "Barbara Shop" обрезается (B, S) | `line-height: 1.3; padding-block: 6px; overflow: visible` на `.brand-name` |
-| Попытки вставить фото в шапку через прозрачный header | Отклонено. Используем `header-shapka-bg` — абсолютное фото внутри sticky шапки |
-
-### Фото
-
-| Проблема | Решение |
-|---|---|
-| `npm run webp` падает с ошибкой icc | Убрать `.withMetadata({ icc: {} })` из `scripts/to-webp.js` |
-| Gallery не показывалась | Компонент не был подключён в `[lang]/index.astro` |
+| iOS Safari: sticky-bar «гуляет» при скролле | Никаких `backdrop-filter` на `position: fixed` |
+| iOS Safari: `overflow-x: hidden` на body ломает `position: fixed` | На `<html>` — `hidden`, на `<body>` — `clip` |
+| Splide на иврите ломает карточки на мобиле | Документ всегда `dir="ltr"`, не задавать `direction` в Splide-конфиге |
+| Great Vibes пропадает на иврите | `[lang="he"]` НЕ должен переопределять `--font-script` |
+| Бренд-имя в шапке плохо читается на фото | Градиент с белым стартом + `filter: drop-shadow` с тёмной тенью |
+| Фото портфолио имеют светлые края | `transform: scale(1.05)` на `.gallery-slide-inner` + `overflow: hidden` |
+| GSAP `fromTo({opacity:0})` на карточках вызывает мигание | Анимировать только `.section-head`, карточки не трогать |
+| `npm run webp` падает с `icc` | Убрать `.withMetadata({icc:{}})` из `scripts/to-webp.js` |
 
 ---
 
-## КОНТЕНТ (content.json) — ЧТО УЖЕ ЕСТЬ
-
-- `brand.logo` → `/images/logo.jpg` ✓
-- `gallery.photos` → `1.webp` – `7.webp` ✓  
-- `salon` фото → `/images/salon.webp` в Hero ✓
-- `shapka.webp` → в шапке ✓
-- `masters[0].experienceYears` → `20` ✓
-- `googleReviews.url` → реальная ссылка ✓
-- `contacts.whatsapp` → placeholder, нужен реальный номер ✗
-- Реальный адрес и координаты → нужны ✗
-- Фото мастеров → нужны ✗
-
----
-
-## ЧТО ОСТАЛОСЬ СДЕЛАТЬ
-
-- [ ] Реальный WhatsApp номер в `contacts.whatsapp`
-- [ ] Реальный адрес салона в `salon.address`
-- [ ] Фото мастеров (сейчас SVG-иконки как плейсхолдер)
-- [ ] OG-картинка `public/images/og.jpg` (1200×630) для соцсетей
-- [ ] GA4 ID → `seo.ga4Id` в content.json
-- [ ] Search Console — подтвердить сайт, отправить sitemap
-
----
-
-## GIT ТЕГИ (точки отката)
+## GIT-ТЕГИ (точки отката)
 
 ```
-backup-pre-header-2025-05-14   ← состояние перед правкой шапки (май 2025)
-ad09940                        ← первое добавление фотографий
+backup-pre-header-2025-05-14   ← перед правкой шапки
+ad09940                        ← первое добавление фото
 ```
 
-Создавать перед крупными правками: `git tag backup-YYYY-MM-DD`
+Создавать перед крупными правками: `git tag backup-YYYY-MM-DD`.
 
 ---
 
 ## ФОРМАТ КОММИТОВ
 
-`feat:` `fix:` `ux:` `content:` `seo:` `perf:`
+`feat:` `fix:` `ux:` `content:` `seo:` `perf:` `docs:`
