@@ -5,7 +5,10 @@ import StickyBar from '../components/StickyBar.astro';
 import content from '../data/content.json';
 import { pick, isRTL, LOCALES } from '../lib/i18n.js';
 const { lang } = Astro.props;
-const dir = isRTL(lang) ? 'rtl' : 'ltr';
+// Документ всегда LTR — структура (карусели, шапка, колонки) идентична во всех языках.
+// Текст на иврите всё равно отображается справа-налево благодаря Unicode bidi.
+const dir = 'ltr';
+void isRTL;
 const logo = content.brand.logo || '/images/logo.jpg';
 const brandName = content.brand.name;
 const instagram = content.contacts.instagram || '#';

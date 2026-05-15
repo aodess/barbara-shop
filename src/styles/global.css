@@ -70,6 +70,9 @@ body {
   color: var(--ink); background: var(--paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* clip (НЕ hidden) — обрезает горизонтальный выход контента,
+     но не делает body скролл-контейнером и не ломает position:fixed */
+  overflow-x: clip;
 }
 
 /* Ambient glow — много розового */
@@ -767,18 +770,18 @@ section + section::before {
 
 /* ===================== RESPONSIVE ===================== */
 
-/* RTL carousel arrows — scoped CSS doesn't reach parent dir="rtl" in Astro, so put it here */
-[dir="rtl"] .hair-arrow svg,
-[dir="rtl"] .m-arrow svg {
-  transform: scaleX(-1) !important;
-}
-
-/* RTL Splide fix — Splide считает позиции в LTR-координатах.
-   Форсим LTR на структуре карусели, а контент слайда возвращаем в RTL. */
-[dir="rtl"] .splide,
-[dir="rtl"] .splide__track,
-[dir="rtl"] .splide__list { direction: ltr; }
-[dir="rtl"] .splide__slide { direction: rtl; }
+/* ===================== ИВРИТ (lang=he, документ LTR) =====================
+   Документ всегда LTR — вся структура идентична русской версии.
+   Иврит-текст рендерится справа-налево сам (Unicode bidi).
+   Точечно правим выравнивание там, где это заметно. */
+[lang="he"] .price-item-top,
+[lang="he"] .ns-item-top { flex-direction: row-reverse; }
+[lang="he"] .price-item-name,
+[lang="he"] .price-item-note,
+[lang="he"] .ns-item-name,
+[lang="he"] .ns-item-note { text-align: right; }
+[lang="he"] .price-item-note,
+[lang="he"] .ns-item-note { direction: rtl; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
