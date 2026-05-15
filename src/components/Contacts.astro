@@ -88,7 +88,6 @@ const hours = content.hours as Record<string, {closed?: boolean; open?: string; 
           {pick({ ru: 'Мы здесь', he: 'אנחנו כאן', en: 'Find Us' }, lang)}
         </h3>
         <p class="contacts-address">{pick(content.salon.city, lang)}</p>
-        <p class="contacts-address-note">{pick({ ru: '(точный адрес — в WhatsApp)', he: '(כתובת מדויקת — בוואטסאפ)', en: '(exact address — via WhatsApp)' }, lang)}</p>
 
         <div class="contacts-social">
           <a class="btn btn-whatsapp contacts-btn" href={`https://wa.me/${waNum}`} target="_blank" rel="noreferrer">

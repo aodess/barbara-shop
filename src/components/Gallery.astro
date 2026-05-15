@@ -13,39 +13,22 @@ const photos = content.gallery.photos;
       <p class="section-intro">{lang === 'ru' ? 'Живые результаты наших мастеров — натуральные, стойкие, безупречные.' : lang === 'he' ? 'תוצאות אמיתיות של המעצבות שלנו — טבעיות, עמידות, מושלמות.' : 'Real results from our artists — natural, lasting, flawless.'}</p>
     </div>
 
-    <!-- Слайд-шоу с плавным переходом (без карусели) -->
-    <div class="gallery-fader" id="gallery-fader" role="button" tabindex="0" aria-label={tr.gallery.title}>
+    <!-- Слайд-шоу с плавным переходом (некликабельное) -->
+    <div class="gallery-fader" id="gallery-fader" aria-label={tr.gallery.title}>
       {photos.map((photo, idx) => (
-        <div class={`gallery-slide-inner${idx === 0 ? ' is-active' : ''}`} data-src={photo.src} data-idx={idx}>
+        <div class={`gallery-slide-inner${idx === 0 ? ' is-active' : ''}`}>
           <img src={photo.src} alt={photo.alt?.[lang] || ''} loading={idx === 0 ? 'eager' : 'lazy'} />
         </div>
       ))}
     </div>
 
-    <div class="gallery-dots" id="gallery-dots" aria-hidden="true">
+    <div class="gallery-dots" aria-hidden="true">
       {photos.map((_, idx) => (
-        <span class={`gallery-dot${idx === 0 ? ' is-active' : ''}`} data-idx={idx}></span>
+        <span class={`gallery-dot${idx === 0 ? ' is-active' : ''}`}></span>
       ))}
     </div>
   </div>
 </section>
-
-<!-- Лайтбокс -->
-<div class="gallery-lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
-  <button class="gallery-lb-close" id="gallery-lb-close" aria-label="Close">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-  <button class="gallery-lb-prev" id="gallery-lb-prev" aria-label="Previous">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-  </button>
-  <div class="gallery-lb-img-wrap">
-    <img id="gallery-lb-img" src="" alt="" />
-  </div>
-  <button class="gallery-lb-next" id="gallery-lb-next" aria-label="Next">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-  </button>
-  <div class="gallery-lb-counter" id="gallery-lb-counter">1 / 7</div>
-</div>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
@@ -54,68 +37,13 @@ const photos = content.gallery.photos;
     var slides = Array.prototype.slice.call(fader.querySelectorAll('.gallery-slide-inner'));
     var dots = Array.prototype.slice.call(document.querySelectorAll('.gallery-dot'));
     var idx = 0;
-    var timer = null;
-
-    function showSlide(i) {
-      idx = ((i % slides.length) + slides.length) % slides.length;
-      slides.forEach(function(s, n) { s.classList.toggle('is-active', n === idx); });
-      dots.forEach(function(d, n) { d.classList.toggle('is-active', n === idx); });
+    if (slides.length > 1) {
+      setInterval(function() {
+        idx = (idx + 1) % slides.length;
+        slides.forEach(function(s, n) { s.classList.toggle('is-active', n === idx); });
+        dots.forEach(function(d, n) { d.classList.toggle('is-active', n === idx); });
+      }, 2000);
     }
-    function startTimer() {
-      stopTimer();
-      if (slides.length > 1) {
-        timer = setInterval(function() { showSlide(idx + 1); }, 2000);
-      }
-    }
-    function stopTimer() { if (timer) { clearInterval(timer); timer = null; } }
-    startTimer();
-
-    // Лайтбокс
-    var photos = slides.map(function(el) {
-      return { src: el.dataset.src, alt: el.querySelector('img').alt };
-    });
-    var lb = document.getElementById('gallery-lightbox');
-    var lbImg = document.getElementById('gallery-lb-img');
-    var lbCounter = document.getElementById('gallery-lb-counter');
-    var lbCur = 0;
-
-    function openLb(i) {
-      lbCur = ((i % photos.length) + photos.length) % photos.length;
-      lbImg.src = photos[lbCur].src;
-      lbImg.alt = photos[lbCur].alt;
-      if (lbCounter) lbCounter.textContent = (lbCur + 1) + ' / ' + photos.length;
-      lb.classList.add('lb-open');
-      document.body.style.overflow = 'hidden';
-      stopTimer();
-    }
-    function closeLb() {
-      lb.classList.remove('lb-open');
-      document.body.style.overflow = '';
-      startTimer();
-    }
-
-    fader.addEventListener('click', function() { openLb(idx); });
-    fader.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(idx); }
-    });
-    dots.forEach(function(d) {
-      d.addEventListener('click', function(e) {
-        e.stopPropagation();
-        showSlide(parseInt(d.dataset.idx));
-        startTimer();
-      });
-    });
-
-    document.getElementById('gallery-lb-close').addEventListener('click', closeLb);
-    document.getElementById('gallery-lb-prev').addEventListener('click', function() { openLb(lbCur - 1); });
-    document.getElementById('gallery-lb-next').addEventListener('click', function() { openLb(lbCur + 1); });
-    lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
-    document.addEventListener('keydown', function(e) {
-      if (!lb.classList.contains('lb-open')) return;
-      if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft') openLb(lbCur - 1);
-      if (e.key === 'ArrowRight') openLb(lbCur + 1);
-    });
   });
 </script>
 
@@ -123,105 +51,46 @@ const photos = content.gallery.photos;
   .gallery-head { margin-bottom: 40px; }
   .gallery-head h2 { margin: 12px 0 16px; }
 
-  /* Слайд-шоу — фиксированная рамка, фото плавно сменяются */
+  /* Слайд-шоу — короче чем 3/4, фото обрезается снизу через object-position */
   .gallery-fader {
     position: relative;
     border-radius: 24px;
     overflow: hidden;
-    aspect-ratio: 3/4;
+    aspect-ratio: 4/5;
     max-width: 420px;
     margin: 0 auto;
     background: var(--surface-raised);
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     border: 1px solid rgba(255,133,194,0.18);
-    cursor: pointer;
-    outline: none;
   }
-  .gallery-fader:focus-visible { box-shadow: 0 0 0 3px var(--rose-bright), 0 8px 32px rgba(0,0,0,0.4); }
 
   .gallery-slide-inner {
     position: absolute; inset: 0;
     opacity: 0;
     transition: opacity 1s ease;
-    pointer-events: none;
   }
-  .gallery-slide-inner.is-active {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .gallery-slide-inner.is-active { opacity: 1; }
   .gallery-slide-inner img {
     width: 100%; height: 100%;
     object-fit: cover;
+    object-position: center top;
     display: block;
   }
 
-  /* Точки-индикаторы */
+  /* Точки-индикаторы (декор, не кликаются) */
   .gallery-dots {
     display: flex; justify-content: center; gap: 8px;
     margin-top: 18px;
+    pointer-events: none;
   }
   .gallery-dot {
     width: 8px; height: 8px; border-radius: 50%;
     background: rgba(255,133,194,0.25);
-    cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease;
   }
   .gallery-dot.is-active {
     background: var(--rose-bright);
     transform: scale(1.35);
     box-shadow: 0 0 10px rgba(255,133,194,0.7);
-  }
-
-  /* Lightbox */
-  .gallery-lightbox {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(5,5,12,0.97);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .gallery-lightbox.lb-open { opacity: 1; pointer-events: auto; }
-  .gallery-lb-img-wrap {
-    max-width: 90vw; max-height: 88vh;
-    border-radius: var(--r-lg); overflow: hidden;
-    box-shadow: 0 0 80px rgba(255,133,194,0.20), 0 32px 80px rgba(0,0,0,0.7);
-    border: 1px solid rgba(255,133,194,0.20);
-  }
-  .gallery-lb-img-wrap img {
-    max-width: 90vw; max-height: 88vh;
-    object-fit: contain; display: block;
-  }
-  .gallery-lb-close,
-  .gallery-lb-prev,
-  .gallery-lb-next {
-    position: absolute;
-    background: rgba(255,133,194,0.10);
-    border: 1px solid rgba(255,133,194,0.25);
-    color: var(--ink);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .gallery-lb-close { top: 20px; right: 20px; width: 44px; height: 44px; }
-  .gallery-lb-close svg { width: 18px; height: 18px; }
-  .gallery-lb-prev { left: 16px; width: 52px; height: 52px; }
-  .gallery-lb-next { right: 16px; width: 52px; height: 52px; }
-  .gallery-lb-prev svg, .gallery-lb-next svg { width: 22px; height: 22px; }
-  .gallery-lb-close:hover,
-  .gallery-lb-prev:hover,
-  .gallery-lb-next:hover {
-    background: rgba(255,133,194,0.22);
-    transform: scale(1.1);
-  }
-  .gallery-lb-counter {
-    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-    color: var(--ink-soft); font-size: 0.82rem; letter-spacing: 0.1em;
-    background: rgba(8,8,16,0.6); padding: 4px 14px; border-radius: 999px;
-  }
-
-  @media (max-width: 580px) {
-    .gallery-lb-prev { left: 6px; width: 40px; height: 40px; }
-    .gallery-lb-next { right: 6px; width: 40px; height: 40px; }
   }
 </style>

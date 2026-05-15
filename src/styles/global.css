@@ -465,27 +465,40 @@ section {
 }
 .lang-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 38px; height: 30px; padding: 0 8px; border-radius: 8px;
-  background: rgba(12,8,18,0.55); color: var(--ink-soft);
-  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em;
+  min-width: 36px; height: 28px; padding: 0 7px; border-radius: 7px;
+  background: rgba(12,8,18,0.45); color: var(--ink-soft);
+  font-size: 0.70rem; font-weight: 700; letter-spacing: 0.05em;
   text-transform: uppercase; text-decoration: none;
-  border: 1px solid rgba(255,133,194,0.25);
+  border: 1px solid rgba(255,133,194,0.22);
   transition: all 0.2s ease;
 }
-.lang-btn:hover { background: rgba(255,133,194,0.18); color: var(--rose-bright); }
+.lang-btn:hover { background: rgba(255,133,194,0.16); color: var(--rose-bright); }
 .lang-btn.lang-active {
   background: linear-gradient(135deg, var(--rose-bright), var(--rose-deep));
   color: #fff; border-color: var(--rose-bright);
-  box-shadow: 0 0 16px rgba(255,133,194,0.55);
+  box-shadow: 0 0 14px rgba(255,133,194,0.50);
+}
+/* На мобиле — ещё немного меньше, прозрачнее, выше */
+@media (max-width: 640px) {
+  .lang-btn {
+    min-width: 30px; height: 24px; padding: 0 6px;
+    font-size: 0.64rem;
+    background: rgba(12,8,18,0.30);
+    border-color: rgba(255,133,194,0.16);
+  }
+  .lang-btn.lang-active { box-shadow: 0 0 10px rgba(255,133,194,0.40); }
+  .header-actions { align-self: flex-start; margin-top: 2px; }
 }
 
-/* Dropdown nav меню */
+/* Dropdown nav меню — фото-фон под тёмным «стеклом» в цвете сайта */
 .nav-dropdown {
   position: fixed; top: 0; inset-inline-end: 0; bottom: 0;
-  width: min(300px, 80vw);
-  background: #0A0512;
+  width: min(320px, 82vw);
+  background:
+    linear-gradient(180deg, rgba(10,5,18,0.86) 0%, rgba(10,5,18,0.93) 100%),
+    url('/images/menu.webp') center/cover no-repeat;
   border-inline-start: 1px solid var(--line-strong);
-  box-shadow: -20px 0 60px rgba(0,0,0,0.7);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.7), inset 0 0 60px rgba(255,133,194,0.08);
   z-index: 85;
   padding: 80px 28px 40px;
   display: flex; flex-direction: column; gap: 4px;
@@ -503,10 +516,16 @@ section {
   padding: 13px 16px; border-radius: var(--r-md);
   transition: background 0.2s, color 0.2s, text-shadow 0.2s;
 }
-.nav-link .nav-heart { color: var(--rose-bright); font-style: normal; }
-.nav-link:hover {
-  background: rgba(255,133,194,0.08); color: var(--rose-bright);
+.nav-link .nav-ico {
+  color: var(--rose-bright); font-style: normal;
+  display: inline-block; width: 1.6em; text-align: center;
+  font-size: 1.15rem; font-weight: 500;
+  text-shadow: 0 0 10px rgba(255,133,194,0.55);
 }
+.nav-link:hover {
+  background: rgba(255,133,194,0.10); color: var(--rose-bright);
+}
+.nav-link:hover .nav-ico { text-shadow: 0 0 16px rgba(255,133,194,0.95); }
 /* «На главную» — кнопка-сброс, отделена линией */
 .nav-home {
   background: transparent; border: none; width: 100%;
@@ -514,7 +533,7 @@ section {
   border-bottom: 1px solid var(--line-strong);
   margin-bottom: 8px; padding-bottom: 18px;
 }
-.nav-home .nav-heart { font-size: 1.3rem; font-weight: 700; }
+.nav-home .nav-ico { font-size: 1.35rem; font-weight: 700; }
 
 /* Overlay */
 .nav-overlay {
@@ -539,7 +558,11 @@ section {
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   display: block; margin-bottom: 8px; letter-spacing: 0.01em;
+  /* кнопка-сброс, кликабельно — скролл наверх */
+  border: none; padding: 0; cursor: pointer;
+  transition: filter 0.25s ease;
 }
+.footer-brand-name:hover { filter: drop-shadow(0 0 18px rgba(255,133,194,0.55)); }
 .footer-city { color: var(--ink-mute); font-size: 0.84rem; margin: 0 0 20px; }
 .footer-rights { color: var(--ink-mute); font-size: 0.80rem; margin: 0; }
 .footer-hearts { color: var(--rose-bright); font-size: 1.1rem; margin: 12px 0 4px; opacity: 0.6; }

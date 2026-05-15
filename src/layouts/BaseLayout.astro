@@ -14,11 +14,11 @@ const brandName = content.brand.name;
 const instagram = content.contacts.instagram || '#';
 
 const navLinks = [
-  { href: '#hair',     label: pick({ ru: 'Прически', he: 'תספורות', en: 'Hair' }, lang) },
-  { href: '#nails',    label: pick({ ru: 'Маникюр', he: 'מניקור', en: 'Nails' }, lang) },
-  { href: '#skin',     label: pick({ ru: 'Косметология', he: 'קוסמטיקה', en: 'Skin' }, lang) },
-  { href: '#masters',  label: pick({ ru: 'Мастера', he: 'צוות', en: 'Team' }, lang) },
-  { href: '#contacts', label: pick({ ru: 'Контакты', he: 'צור קשר', en: 'Contact' }, lang) },
+  { href: '#hair',     icon: '✂', label: pick({ ru: 'Прически', he: 'תספורות', en: 'Hair' }, lang) },
+  { href: '#nails',    icon: '✦', label: pick({ ru: 'Маникюр', he: 'מניקור', en: 'Nails' }, lang) },
+  { href: '#skin',     icon: '❀', label: pick({ ru: 'Косметология', he: 'קוסמטיקה', en: 'Skin' }, lang) },
+  { href: '#masters',  icon: '★', label: pick({ ru: 'Мастера', he: 'צוות', en: 'Team' }, lang) },
+  { href: '#contacts', icon: '→', label: pick({ ru: 'Контакты', he: 'צור קשר', en: 'Contact' }, lang) },
 ];
 
 const bookLabel = pick({ ru: 'Записаться', he: 'קביעת תור', en: 'Book' }, lang);
@@ -51,21 +51,13 @@ const soonLabel = pick({
           </span>
         </a>
 
-        <!-- Действия: языки над иконкой инсты -->
+        <!-- Действия: только переключатель языков -->
         <div class="header-actions">
           <div class="header-langs-inline">
             {LOCALES.map(l => (
               <a href={`/${l}/`} class={`lang-btn${l === lang ? ' lang-active' : ''}`}>{l.toUpperCase()}</a>
             ))}
           </div>
-
-          <a class="header-insta" href={instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <circle cx="12" cy="12" r="4"/>
-              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
         </div>
       </div>
     </header>
@@ -102,11 +94,11 @@ const soonLabel = pick({
     <nav class="nav-dropdown" id="nav-dropdown" aria-label="Navigation">
       <button class="nav-close-btn" id="nav-close" aria-label="Close menu">✕</button>
       <button class="nav-link nav-home" id="nav-home" type="button">
-        <span class="nav-heart">⌂</span>{pick({ ru: 'На главную', he: 'לראש הדף', en: 'To top' }, lang)}
+        <span class="nav-ico">⌂</span>{pick({ ru: 'На главную', he: 'לראש הדף', en: 'To top' }, lang)}
       </button>
       {navLinks.map(item => (
         <a class="nav-link" href={item.href}>
-          <span class="nav-heart">♥</span>{item.label}
+          <span class="nav-ico">{item.icon}</span>{item.label}
         </a>
       ))}
     </nav>
@@ -117,7 +109,7 @@ const soonLabel = pick({
     <!-- Футер -->
     <footer class="site-footer">
       <div class="container">
-        <span class="footer-brand-name">{brandName}</span>
+        <button class="footer-brand-name" id="footer-to-top" type="button" aria-label={pick({ ru: 'Наверх', he: 'לראש', en: 'To top' }, lang)}>{brandName}</button>
         <p class="footer-city">{pick(content.salon.city, lang)}</p>
         <div class="footer-hearts">♥ ♥ ♥</div>
         <p class="footer-rights">&copy; {new Date().getFullYear()} {brandName}</p>
@@ -182,6 +174,12 @@ const soonLabel = pick({
         var navHome = document.getElementById('nav-home');
         navHome && navHome.addEventListener('click', function() {
           closeNav();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Бренд в футере — скролл наверх
+        var footerTop = document.getElementById('footer-to-top');
+        footerTop && footerTop.addEventListener('click', function() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
