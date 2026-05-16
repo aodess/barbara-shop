@@ -281,6 +281,8 @@ section {
   border: 1px solid rgba(255,255,255,0.10);
   font-size: 0.84rem; font-weight: 500;
 }
+.status-text { display: flex; flex-direction: column; line-height: 1.2; }
+.status-opens { font-size: 0.70rem; opacity: 0.75; font-weight: 400; }
 .status-open  { color: #A8F4D1; }
 .status-closed { color: var(--rose-bright); }
 .status-dot {

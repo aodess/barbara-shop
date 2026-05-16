@@ -5,6 +5,16 @@ import { computeStatus } from '../lib/businessHours.js';
 const { lang } = Astro.props;
 const status = computeStatus(content.hours);
 const instagram = content.contacts.instagram || '#';
+
+// Подпись "Откроется в..." когда закрыто
+let opensHint = '';
+if (!status.open && status.opensAt) {
+  if (status.opensInDays === 0) {
+    opensHint = pick({ ru: `Откроется в ${status.opensAt}`, he: `נפתח ב-${status.opensAt}`, en: `Opens at ${status.opensAt}` }, lang);
+  } else if (status.opensInDays === 1) {
+    opensHint = pick({ ru: `Завтра в ${status.opensAt}`, he: `מחר ב-${status.opensAt}`, en: `Tomorrow ${status.opensAt}` }, lang);
+  }
+}
 ---
 
 <section class="hero" id="home">
@@ -36,9 +46,12 @@ const instagram = content.contacts.instagram || '#';
         </a>
         <a class={`status-pill${status.open ? ' status-open' : ' status-closed'}`} href="#contacts" aria-label={pick({ ru: 'Часы работы', he: 'שעות פעילות', en: 'Hours' }, lang)}>
           <span class="status-dot"></span>
-          {status.open
-            ? pick({ ru: 'Открыто', he: 'פתוח', en: 'Open' }, lang)
-            : pick({ ru: 'Закрыто', he: 'סגור', en: 'Closed' }, lang)}
+          <span class="status-text">
+            {status.open
+              ? pick({ ru: 'Открыто', he: 'פתוח', en: 'Open' }, lang)
+              : pick({ ru: 'Закрыто', he: 'סגור', en: 'Closed' }, lang)}
+            {!status.open && opensHint && <span class="status-opens">{opensHint}</span>}
+          </span>
         </a>
         <a class="hero-rating" href={content.googleReviews.url} target="_blank" rel="noreferrer" aria-label={pick({ ru: 'Отзывы на Google', he: 'ביקורות ב-Google', en: 'Google reviews' }, lang)}>
           <svg class="google-mini" viewBox="0 0 48 48" aria-hidden="true">

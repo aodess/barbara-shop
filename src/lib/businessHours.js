@@ -12,11 +12,14 @@ export function computeStatus(hours) {
   const nowMin = now.getHours()*60 + now.getMinutes();
 
   if (todayCfg && !todayCfg.closed) {
-    const open  = toMin(todayCfg.open);
-    const close = toMin(todayCfg.close);
-    if (nowMin >= open && nowMin < close) {
-      const h = String(Math.floor((close - nowMin - 1) / 60 + now.getHours())).padStart(2,'0');
+    const openMin  = toMin(todayCfg.open);
+    const closeMin = toMin(todayCfg.close);
+    if (nowMin >= openMin && nowMin < closeMin) {
       return { open: true, until: todayCfg.close };
+    }
+    // Ещё не открылись сегодня
+    if (nowMin < openMin) {
+      return { open: false, opensAt: todayCfg.open, opensInDays: 0 };
     }
   }
 
