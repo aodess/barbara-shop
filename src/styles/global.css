@@ -693,19 +693,6 @@ section {
 }
 [lang="he"] .section-head h2::after { display: none; }
 
-/* Декоративная линия между секциями */
-section + section::before {
-  content: '';
-  display: block;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(255,20,147,0.15) 20%,
-    rgba(255,20,147,0.40) 50%,
-    rgba(255,20,147,0.15) 80%,
-    transparent 100%);
-  margin: 0 10%;
-}
 
 /* ===================== SPLIDE HEARTS ===================== */
 
