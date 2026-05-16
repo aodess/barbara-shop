@@ -544,6 +544,9 @@ section {
   position: relative; overflow: hidden;
   text-align: center;
 }
+.site-footer .container {
+  display: flex; flex-direction: column; align-items: center;
+}
 .footer-brand-name {
   font-family: var(--font-script); font-size: 3rem; font-weight: 400;
   background: linear-gradient(135deg, var(--rose-bright) 0%, #FFD6F0 40%, var(--gold) 100%);
