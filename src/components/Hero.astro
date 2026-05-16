@@ -7,12 +7,24 @@ const status = computeStatus(content.hours);
 const instagram = content.contacts.instagram || '#';
 
 // Подпись "Откроется в..." когда закрыто
+const DAY_SHORT = {
+  sun: { ru: 'Вс', he: 'א׳', en: 'Sun' },
+  mon: { ru: 'Пн', he: 'ב׳', en: 'Mon' },
+  tue: { ru: 'Вт', he: 'ג׳', en: 'Tue' },
+  wed: { ru: 'Ср', he: 'ד׳', en: 'Wed' },
+  thu: { ru: 'Чт', he: 'ה׳', en: 'Thu' },
+  fri: { ru: 'Пт', he: 'ו׳', en: 'Fri' },
+  sat: { ru: 'Сб', he: 'ש׳', en: 'Sat' },
+};
 let opensHint = '';
 if (!status.open && status.opensAt) {
   if (status.opensInDays === 0) {
     opensHint = pick({ ru: `Откроется в ${status.opensAt}`, he: `נפתח ב-${status.opensAt}`, en: `Opens at ${status.opensAt}` }, lang);
   } else if (status.opensInDays === 1) {
     opensHint = pick({ ru: `Завтра в ${status.opensAt}`, he: `מחר ב-${status.opensAt}`, en: `Tomorrow ${status.opensAt}` }, lang);
+  } else if (status.opensDayKey && DAY_SHORT[status.opensDayKey]) {
+    const day = pick(DAY_SHORT[status.opensDayKey], lang);
+    opensHint = pick({ ru: `${day}, ${status.opensAt}`, he: `${day} ${status.opensAt}`, en: `${day} ${status.opensAt}` }, lang);
   }
 }
 ---
